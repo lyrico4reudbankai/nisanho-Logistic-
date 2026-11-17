@@ -1,0 +1,67 @@
+{% extends "shared/base.html" %}
+{% block title %}Customer Dashboard - Nisanho Logistics{% endblock %}
+{% block body %}
+<div class="min-h-screen">
+  <header class="sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 border-b border-orange-500/20 bg-[#050814]/70 backdrop-blur-xl">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <img src="{{ url_for('static', filename='images/nisanho-logo.jpg') }}" alt="Nisanho Logistics logo" class="w-10 h-10 rounded-full object-cover border border-orange-500/30 bg-white" />
+        <div>
+          <h1 class="text-xl font-heading font-extrabold text-orange-50">Customer Dashboard</h1>
+          <p class="text-sm text-slate-400">Welcome, {{ customer.full_name }}</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="{{ url_for('customer_chat') }}" class="btn-cyan px-3 py-2 rounded-lg text-sm relative"><i class="fa-solid fa-comments mr-2"></i>Chat <span id="customer-chat-badge" class="hidden ml-1 inline-flex items-center justify-center min-w-[1.1rem] h-5 px-1.5 rounded-full bg-white text-orange-600 text-xs font-bold">0</span></a>
+        <a href="{{ url_for('customer_home') }}" class="btn-outline-cyan px-3 py-2 rounded-lg text-sm"><i class="fa-solid fa-globe mr-2"></i>Website</a>
+        <form method="POST" action="{{ url_for('customer_logout') }}" class="inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn-outline-cyan px-3 py-2 rounded-lg text-sm"><i class="fa-solid fa-right-from-bracket mr-2"></i>Logout</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <div class="px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}{% for category, message in messages %}<div class="flash flash-{{ category }}">{{ message }}</div>{% endfor %}{% endif %}
+    {% endwith %}
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="stat-card glow-cyan"><div class="stat-label">Total Orders</div><div class="stat-value">{{ stats.total }}</div></div>
+      <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-value text-amber-300">{{ stats.pending }}</div></div>
+      <div class="stat-card"><div class="stat-label">Approved</div><div class="stat-value text-emerald-300">{{ stats.approved }}</div></div>
+      <div class="stat-card"><div class="stat-label">Rejected</div><div class="stat-value text-rose-300">{{ stats.rejected }}</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header flex items-center justify-between">
+        <div class="section-title"><i class="fa-solid fa-box-archive text-cyan-300"></i> My Orders</div>
+        <a href="{{ url_for('customer_home') }}#quote" class="btn-cyan px-3 py-1.5 rounded-lg text-sm"><i class="fa-solid fa-plus mr-1"></i>Submit New Order</a>
+      </div>
+      <div class="card-body p-0 overflow-x-auto">
+        {% if orders %}
+        <table class="admin-table min-w-[900px]">
+          <thead><tr><th>ID</th><th>Tracking</th><th>Service</th><th>Route</th><th>Status</th><th>Submitted</th><th>Action</th></tr></thead>
+          <tbody>
+            {% for o in orders %}
+            <tr>
+              <td>#{{ o.id }}</td>
+              <td class="tracking-mono text-cyan-300">{{ o.tracking_number or '-' }}</td>
+              <td>{{ o.service_required or '-' }}</td>
+              <td class="text-sm">{{ o.origin or '-' }} → {{ o.destination or '-' }}</td>
+              <td><span class="status-pill status-{{ o.status }}">{{ o.status }}</span></td>
+              <td class="text-sm">{{ o.submission_date|datetimeformat }}</td>
+              <td><a href="{{ url_for('customer_order_details', order_id=o.id) }}" class="btn-outline-cyan px-3 py-1.5 rounded-md text-xs font-semibold">View</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+          <div class="empty-state">You have not submitted any orders yet. <a href="{{ url_for('customer_home') }}#quote" class="text-cyan-300 hover:underline">Submit your first order</a>.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

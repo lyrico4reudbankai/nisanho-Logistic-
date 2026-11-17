@@ -1,0 +1,47 @@
+﻿{% extends "admin/base.html" %}
+{% block page_title %}Customer Details{% endblock %}
+{% block page_subtitle %}{{ customer.full_name }} • Customer #{{ customer.id }}{% endblock %}
+{% block content %}
+  <a href="{{ url_for('admin_customers') }}" class="btn-outline-cyan px-3 py-2 rounded-lg text-sm inline-flex items-center"><i class="fa-solid fa-arrow-left mr-2"></i>Back to Customers</a>
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+    <div class="card xl:col-span-1"><div class="card-header"><div class="section-title"><i class="fa-solid fa-id-card text-cyan-300"></i>Customer Profile</div></div>
+      <div class="card-body space-y-3 text-sm">
+        <div><div class="label">Full Name</div><div>{{ customer.full_name }}</div></div>
+        <div><div class="label">Company</div><div>{{ customer.company_name or '-' }}</div></div>
+        <div><div class="label">Email</div><div>{{ customer.email }}</div></div>
+        <div><div class="label">Phone</div><div>{{ customer.phone or '-' }}</div></div>
+        <div><div class="label">Created</div><div>{{ customer.created_at|datetimeformat }}</div></div>
+        <div><div class="label">Updated</div><div>{{ customer.updated_at|datetimeformat if customer.updated_at else '-' }}</div></div>
+      </div>
+    </div>
+    <div class="card xl:col-span-2"><div class="card-header"><div class="section-title"><i class="fa-solid fa-box-archive text-cyan-300"></i>Order History</div></div>
+      <div class="card-body p-0 overflow-x-auto">
+        {% if orders %}
+        <table class="admin-table min-w-[900px]">
+          <thead><tr><th>ID</th><th>Tracking</th><th>Service</th><th>Route</th><th>Status</th><th>Submitted</th><th>Processed</th><th>Action</th></tr></thead>
+          <tbody>
+            {% for o in orders %}
+            <tr>
+              <td>#{{ o.id }}</td>
+              <td class="tracking-mono text-cyan-300">{{ o.tracking_number or '-' }}</td>
+              <td>{{ o.service_required or '-' }}</td>
+              <td class="text-sm">{{ o.origin or '-' }} → {{ o.destination or '-' }}</td>
+              <td><span class="status-pill status-{{ o.status }}">{{ o.status }}</span></td>
+              <td class="text-sm">{{ o.submission_date|datetimeformat }}</td>
+              <td class="text-sm">
+                {% if o.status == 'approved' %}{{ o.approved_at|datetimeformat }}<div class="text-xs text-slate-400">{{ o.approved_by or '' }}</div>
+                {% elif o.status == 'rejected' %}{{ o.rejected_at|datetimeformat }}<div class="text-xs text-slate-400">{{ o.rejected_by or '' }}</div>
+                {% else %}-{% endif %}
+              </td>
+              <td><a href="{{ url_for('admin_order_details', order_id=o.id) }}" class="btn-outline-cyan px-3 py-1.5 rounded-md text-xs font-semibold">View</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+          <div class="empty-state">No orders linked to this customer yet.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

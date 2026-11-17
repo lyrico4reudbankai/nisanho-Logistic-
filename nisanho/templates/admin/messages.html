@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Contact Messages{% endblock %}
+{% block page_subtitle %}Customer inquiries submitted through the website{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <form method="GET" action="{{ url_for('admin_messages') }}" class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+        <div class="md:col-span-9">
+          <label class="label" for="message-search">Search messages</label>
+          <input id="message-search" type="search" name="q" value="{{ q }}" class="input-field" placeholder="Name, email, subject, or message">
+        </div>
+        <div class="md:col-span-3 flex gap-2">
+          <button type="submit" class="btn-cyan px-4 py-2.5 rounded-lg font-semibold flex-1">Search</button>
+          <a href="{{ url_for('admin_messages') }}" class="btn-outline-cyan px-4 py-2.5 rounded-lg font-semibold">Reset</a>
+        </div>
+      </form>
+    </div>
+    <div class="card-body p-0 overflow-x-auto">
+      {% if messages %}
+      <table class="admin-table min-w-[760px]">
+        <thead><tr><th>Received</th><th>Sender</th><th>Subject</th><th>Message</th></tr></thead>
+        <tbody>
+          {% for item in messages %}
+          <tr>
+            <td class="text-sm">{{ item.created_at|datetimeformat }}</td>
+            <td><div class="font-medium">{{ item.full_name }}</div><a class="text-cyan-300 hover:underline text-sm" href="mailto:{{ item.email }}">{{ item.email }}</a></td>
+            <td>{{ item.subject or '-' }}</td>
+            <td class="whitespace-pre-wrap">{{ item.message }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <div class="empty-state">No contact messages found.</div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

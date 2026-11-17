@@ -1,0 +1,37 @@
+﻿{% extends "shared/base.html" %}
+{% block title %}Admin Login - Nisanho Logistics{% endblock %}
+{% block body %}
+<div class="min-h-screen flex items-center justify-center px-4 py-10 relative overflow-hidden">
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(238,109,31,.14),transparent_35%),radial-gradient(circle_at_80%_10%,rgba(14,29,102,.4),transparent_30%),linear-gradient(180deg,#000624,#000A3C)]"></div>
+  <div class="absolute inset-0 opacity-20" style="background-image:linear-gradient(rgba(238,109,31,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(238,109,31,.08) 1px,transparent 1px);background-size:40px 40px"></div>
+  <div class="relative w-full max-w-md">
+    <div class="glass-panel p-6 sm:p-8 glow-cyan border border-orange/25">
+      <div class="flex items-center gap-3 mb-6">
+        <img src="{{ url_for('static', filename='images/nisanho-logo.jpg') }}" alt="Nisanho Logistics logo" class="w-12 h-12 rounded-full object-cover border border-orange/30 bg-white" />
+        <div>
+          <h1 class="text-2xl font-heading font-extrabold text-slate-50">Admin Login</h1>
+          <p class="text-xs uppercase tracking-[.2em] text-orange">Nisanho Logistics</p>
+        </div>
+      </div>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}{% for category, message in messages %}<div class="flash flash-{{ category }}">{{ message }}</div>{% endfor %}{% endif %}
+      {% endwith %}
+      <form method="POST" action="{{ url_for('admin_login', next=next) }}" class="space-y-4">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="next" value="{{ next }}">
+        <div>
+          <label class="label" for="email">Email Address</label>
+          <input id="email" name="email" type="email" required autocomplete="username" class="input-field" placeholder="Admin email">
+        </div>
+        <div>
+          <label class="label" for="password">Password</label>
+          <input id="password" name="password" type="password" required autocomplete="current-password" class="input-field" placeholder="Password">
+        </div>
+        <button type="submit" class="w-full btn-cyan py-3 rounded-lg font-semibold"><i class="fa-solid fa-right-to-bracket mr-2"></i>Sign In</button>
+      </form>
+      <p class="text-xs text-slate-400 mt-4 text-center">Authorized administrators only. Session-protected access.</p>
+      <div class="mt-4 text-center"><a href="{{ url_for('customer_home') }}" class="text-sm text-orange hover:text-orange-hover">← Back to customer website</a></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

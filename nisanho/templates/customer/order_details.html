@@ -1,0 +1,90 @@
+{% extends "shared/base.html" %}
+{% block title %}Order Details - Nisanho Logistics{% endblock %}
+{% block body %}
+<div class="min-h-screen">
+  <header class="sticky top-0 z-20 px-4 sm:px-6 lg:px-8 py-4 border-b border-orange-500/20 bg-[#050814]/70 backdrop-blur-xl">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <img src="{{ url_for('static', filename='images/nisanho-logo.jpg') }}" alt="Nisanho Logistics logo" class="w-10 h-10 rounded-full object-cover border border-orange-500/30 bg-white" />
+        <div>
+          <h1 class="text-xl font-heading font-extrabold text-orange-50">Order Details</h1>
+          <p class="text-sm text-slate-400">Order #{{ order.id }} • {{ order.tracking_number or 'No tracking number' }}</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="{{ url_for('customer_dashboard') }}" class="btn-outline-cyan px-3 py-2 rounded-lg text-sm"><i class="fa-solid fa-arrow-left mr-2"></i>Back to Dashboard</a>
+        <form method="POST" action="{{ url_for('customer_logout') }}" class="inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn-outline-cyan px-3 py-2 rounded-lg text-sm"><i class="fa-solid fa-right-from-bracket mr-2"></i>Logout</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <div class="px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}{% for category, message in messages %}<div class="flash flash-{{ category }}">{{ message }}</div>{% endfor %}{% endif %}
+    {% endwith %}
+
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div class="xl:col-span-2 space-y-6">
+        <div class="card">
+          <div class="card-header"><div class="section-title"><i class="fa-solid fa-file-lines text-cyan-300"></i>Order Information</div></div>
+          <div class="card-body grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+            <div><div class="label">Order ID</div><div>#{{ order.id }}</div></div>
+            <div><div class="label">Tracking Number</div><div class="tracking-mono text-cyan-300">{{ order.tracking_number or '-' }}</div></div>
+            <div><div class="label">Status</div><span class="status-pill status-{{ order.status }}">{{ order.status }}</span></div>
+            <div><div class="label">Service Required</div><div>{{ order.service_required or '-' }}</div></div>
+            <div><div class="label">Shipping Method</div><div>{{ order.shipping_method or '-' }}</div></div>
+            <div><div class="label">Origin</div><div>{{ order.origin or '-' }}</div></div>
+            <div><div class="label">Destination</div><div>{{ order.destination or '-' }}</div></div>
+            <div><div class="label">Cargo Type</div><div>{{ order.cargo_type or '-' }}</div></div>
+            <div><div class="label">Weight / Volume</div><div>{{ order.weight or '-' }}</div></div>
+            <div><div class="label">Submitted</div><div>{{ order.submission_date|datetimeformat }}</div></div>
+            <div><div class="label">Updated</div><div>{{ order.updated_at|datetimeformat if order.updated_at else '-' }}</div></div>
+            <div class="sm:col-span-2"><div class="label">Message / Requirements</div><div class="whitespace-pre-wrap text-slate-300">{{ order.message or '-' }}</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="section-title"><i class="fa-solid fa-user text-cyan-300"></i>Customer Information</div></div>
+          <div class="card-body grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+            <div><div class="label">Full Name</div><div>{{ order.full_name }}</div></div>
+            <div><div class="label">Company</div><div>{{ order.company_name or '-' }}</div></div>
+            <div><div class="label">Email</div><div>{{ order.email }}</div></div>
+            <div><div class="label">Phone</div><div>{{ order.phone or '-' }}</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="card">
+          <div class="card-header"><div class="section-title"><i class="fa-solid fa-shield-check text-cyan-300"></i>Order Status</div></div>
+          <div class="card-body space-y-3 text-sm">
+            {% if order.status == 'pending' %}
+              <div class="p-3 rounded-lg border border-amber-400/25 bg-amber-500/10 text-amber-200">
+                <div class="font-semibold mb-1">Pending Review</div>
+                <div>Your order has been received and is awaiting review by our logistics team.</div>
+              </div>
+            {% elif order.status == 'approved' %}
+              <div class="p-3 rounded-lg border border-emerald-400/25 bg-emerald-500/10 text-emerald-200">
+                <div class="font-semibold mb-1">Approved</div>
+                <div>Approved on {{ order.approved_at|datetimeformat }}</div>
+                <div>By: {{ order.approved_by or '-' }}</div>
+              </div>
+            {% elif order.status == 'rejected' %}
+              <div class="p-3 rounded-lg border border-rose-400/25 bg-rose-500/10 text-rose-200">
+                <div class="font-semibold mb-1">Rejected</div>
+                <div>Rejected on {{ order.rejected_at|datetimeformat }}</div>
+                <div>By: {{ order.rejected_by or '-' }}</div>
+                <div class="mt-2"><span class="label">Reason</span><div class="whitespace-pre-wrap">{{ order.rejection_reason or '-' }}</div></div>
+              </div>
+            {% endif %}
+            <p class="text-xs text-slate-400">If you have questions about this order, please contact our office.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

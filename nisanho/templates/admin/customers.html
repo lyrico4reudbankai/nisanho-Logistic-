@@ -1,0 +1,43 @@
+﻿{% extends "admin/base.html" %}
+{% block page_title %}Customers{% endblock %}
+{% block page_subtitle %}Customer records linked from approved orders{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <form method="GET" action="{{ url_for('admin_customers') }}" class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+        <div class="md:col-span-9">
+          <label class="label">Search</label>
+          <input type="text" name="q" value="{{ q or '' }}" class="input-field" placeholder="Name, company, email, or phone">
+        </div>
+        <div class="md:col-span-3 flex gap-2">
+          <button type="submit" class="btn-cyan px-4 py-2.5 rounded-lg font-semibold flex-1">Filter</button>
+          <a href="{{ url_for('admin_customers') }}" class="btn-outline-cyan px-4 py-2.5 rounded-lg font-semibold">Reset</a>
+        </div>
+      </form>
+    </div>
+    <div class="card-body p-0 overflow-x-auto">
+      {% if customers %}
+      <table class="admin-table min-w-[900px]">
+        <thead><tr><th>ID</th><th>Customer</th><th>Contact</th><th>Orders</th><th>Pending</th><th>Approved</th><th>Rejected</th><th>Created</th><th>Action</th></tr></thead>
+        <tbody>
+          {% for c in customers %}
+          <tr>
+            <td>#{{ c.id }}</td>
+            <td><div class="font-medium">{{ c.full_name }}</div><div class="text-xs text-slate-400">{{ c.company_name or '-' }}</div></td>
+            <td class="text-sm"><div>{{ c.email }}</div><div class="text-slate-400">{{ c.phone or '-' }}</div></td>
+            <td>{{ c.order_count or 0 }}</td>
+            <td>{{ c.pending_count or 0 }}</td>
+            <td>{{ c.approved_count or 0 }}</td>
+            <td>{{ c.rejected_count or 0 }}</td>
+            <td class="text-sm">{{ c.created_at|datetimeformat }}</td>
+            <td><a href="{{ url_for('admin_customer_details', customer_id=c.id) }}" class="btn-outline-cyan px-3 py-1.5 rounded-md text-xs font-semibold">View</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <div class="empty-state">No customers found.</div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

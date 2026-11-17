@@ -1,0 +1,1940 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
+  <meta name="tracking-api-template" content="{{ url_for('api_track_order', tracking_number='TRACKING_NUMBER') }}" />
+  <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='images/nisanho-logo.jpg') }}" />
+  <title>Nisanho Logistics Corporation | Customs Brokerage & Logistics Services</title>
+  <meta name="description" content="Nisanho Logistics Corporation specializes in seamless customs brokerage, trucking, freight forwarding, and end-to-end supply chain solutions from Davao City, Philippines." />
+  <meta property="og:title" content="Nisanho Logistics Corporation | Customs Brokerage & Logistics Services" />
+  <meta property="og:description" content="Seamless customs brokerage, freight forwarding, trucking, and supply chain logistics. Today's Customer, Tomorrow's Friends." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#000A3C" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: {
+              DEFAULT: '#000A3C',
+              dark: '#000624',
+              surface: '#05124A',
+              light: '#0E1D66'
+            },
+            orange: {
+              DEFAULT: '#EE6D1F',
+              hover: '#D55A12',
+              light: '#FFF4ED'
+            },
+            slate: {
+              corporate: '#71828A',
+              subtle: '#EAEFF2'
+            },
+            dark: '#111111'
+          },
+          fontFamily: {
+            heading: ['Montserrat', 'sans-serif'],
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #e5eefc;
+      background-color: #000624;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Montserrat', sans-serif;
+    }
+    .hero-bg {
+      background-image: linear-gradient(to right, rgba(0, 10, 60, 0.94), rgba(0, 10, 60, 0.82)), url('https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+    .pattern-grid {
+      background-image: radial-gradient(rgba(238, 109, 31, 0.15) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    @keyframes pulseRoute {
+      0%, 100% { opacity: 0.4; transform: scale(0.98); }
+      50% { opacity: 1; transform: scale(1.02); }
+    }
+    .animate-pulse-route {
+      animation: pulseRoute 3s ease-in-out infinite;
+    }
+    .reveal-elem {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-elem.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal-elem {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .animate-pulse-route {
+        animation: none !important;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}" />
+</head>
+<body class="customer-site antialiased selection:bg-orange selection:text-slate-950">
+
+  <!-- ==================== STICKY NAVIGATION ==================== -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-navy/95 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Brand Logo -->
+        <a href="#home" id="nav-brand" class="flex items-center gap-3 group focus:outline-none" aria-label="Nisanho Logistics Corporation Homepage">
+          <img src="{{ url_for('static', filename='images/nisanho-logo.jpg') }}" alt="Nisanho Logistics Corporation logo" class="w-14 h-14 rounded-full object-cover bg-white shadow-md transition-transform group-hover:scale-105 border border-orange/40" />
+          <div class="flex flex-col">
+            <span class="font-heading font-extrabold text-white text-lg tracking-wider leading-tight">NISANHO</span>
+            <span class="text-[10px] tracking-[0.2em] font-semibold text-orange uppercase">Logistics Corporation</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-8" aria-label="Main Navigation">
+          <a href="#home" class="nav-link text-sm font-medium text-gray-200 hover:text-orange transition-colors py-1">Home</a>
+          <a href="#tracking" class="nav-link text-sm font-medium text-gray-200 hover:text-orange transition-colors py-1">Track Shipment</a>
+          <a href="#services" class="nav-link text-sm font-medium text-gray-200 hover:text-orange transition-colors py-1">Services</a>
+          <a href="#about" class="nav-link text-sm font-medium text-gray-200 hover:text-orange transition-colors py-1">About Us</a>
+          <a href="#process" class="nav-link text-sm font-medium text-gray-200 hover:text-orange transition-colors py-1">Process</a>
+          <a href="#contact" class="nav-link text-sm font-medium text-gray-200 hover:text-orange transition-colors py-1">Contact</a>
+          <a href="{{ url_for('customer_login') }}" class="nav-link text-sm font-medium text-gray-200 hover:text-orange transition-colors py-1">Customer Login</a>
+        </nav>
+
+        <!-- Desktop CTA -->
+        <div class="hidden md:flex items-center">
+          <a href="#quote" id="desktop-quote-cta" class="inline-flex items-center justify-center px-5 py-2.5 rounded-md bg-orange hover:bg-orange-hover text-white text-sm font-semibold tracking-wide shadow-md transition-all duration-200 hover:shadow-orange/30 hover:-translate-y-0.5">
+            <span>Request a Quote</span>
+            <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+          </a>
+        </div>
+
+        <!-- Mobile Hamburger Button -->
+        <div class="flex md:hidden">
+          <button id="mobile-menu-btn" type="button" class="text-gray-200 hover:text-orange p-2 rounded-md focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false">
+            <i id="hamburger-icon" class="fa-solid fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-navy-dark/98 border-b border-white/10 px-4 pt-2 pb-6 space-y-3 transition-all duration-300">
+      <a href="#home" class="mobile-nav-link block py-2.5 px-3 text-base font-medium text-gray-200 hover:text-orange hover:bg-white/5 rounded-md">Home</a>
+      <a href="#tracking" class="mobile-nav-link block py-2.5 px-3 text-base font-medium text-gray-200 hover:text-orange hover:bg-white/5 rounded-md">Track Shipment</a>
+      <a href="#services" class="mobile-nav-link block py-2.5 px-3 text-base font-medium text-gray-200 hover:text-orange hover:bg-white/5 rounded-md">Services</a>
+      <a href="#about" class="mobile-nav-link block py-2.5 px-3 text-base font-medium text-gray-200 hover:text-orange hover:bg-white/5 rounded-md">About Us</a>
+      <a href="#process" class="mobile-nav-link block py-2.5 px-3 text-base font-medium text-gray-200 hover:text-orange hover:bg-white/5 rounded-md">Process</a>
+      <a href="#community" class="mobile-nav-link block py-2.5 px-3 text-base font-medium text-gray-200 hover:text-orange hover:bg-white/5 rounded-md">Beyond Logistics</a>
+      <a href="#contact" class="mobile-nav-link block py-2.5 px-3 text-base font-medium text-gray-200 hover:text-orange hover:bg-white/5 rounded-md">Contact</a>
+      <a href="{{ url_for('customer_login') }}" class="mobile-nav-link block py-2.5 px-3 text-base font-medium text-gray-200 hover:text-orange hover:bg-white/5 rounded-md">Customer Login</a>
+      <div class="pt-2">
+        <a href="#quote" class="mobile-nav-link block w-full text-center py-3 px-4 rounded-md bg-orange text-white font-semibold shadow-md">
+          Request a Quote
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section id="home" class="hero-bg relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden text-white flex items-center min-h-[90vh]">
+    <!-- Background Accents -->
+    <div class="absolute inset-0 pattern-grid opacity-20 pointer-events-none"></div>
+    <div class="absolute right-0 top-1/4 w-96 h-96 bg-orange/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left Content -->
+        <div class="lg:col-span-8 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-orange font-semibold text-xs tracking-wider uppercase backdrop-blur-sm">
+            <span class="w-2 h-2 rounded-full bg-orange animate-ping"></span>
+            <span>Established 2019 &bull; Davao City, Philippines</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight leading-tight text-white">
+            Moving Your <span class="text-orange">Business</span> Forward.
+          </h1>
+
+          <p class="text-lg md:text-xl font-heading font-semibold text-gray-200 max-w-2xl leading-snug">
+            Reliable Customs Brokerage & Logistics Solutions for Local and International Trade.
+          </p>
+
+          <p class="text-sm md:text-base text-gray-300 max-w-2xl leading-relaxed">
+            Nisanho Logistics Corporation provides integrated customs brokerage and logistics services designed to simplify the movement of goods from origin to destination. From customs documentation and compliance to trucking, freight forwarding, transportation, and cargo handling, we manage the complexities so you can focus on your business.
+          </p>
+
+          <!-- CTAs -->
+          <div class="pt-4 flex flex-col sm:flex-row gap-4">
+            <a href="#tracking" id="hero-track-cta" class="inline-flex items-center justify-center px-6 py-3.5 rounded-md bg-orange hover:bg-orange-hover text-white font-semibold text-sm tracking-wide shadow-lg shadow-orange/30 transition-all hover:-translate-y-0.5">
+              <i class="fa-solid fa-magnifying-glass-location mr-2.5"></i>
+              <span>Track Shipment</span>
+            </a>
+            <a href="#quote" id="hero-quote-cta" class="inline-flex items-center justify-center px-6 py-3.5 rounded-md bg-white/10 hover:bg-white/20 text-white font-semibold text-sm tracking-wide border border-white/30 backdrop-blur-sm transition-all hover:-translate-y-0.5">
+              <span>Request a Quote</span>
+              <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+            </a>
+          </div>
+
+          <!-- Brand Tagline Badge -->
+          <div class="pt-6 border-t border-white/15 flex items-center gap-3 text-xs text-gray-300 font-medium">
+            <i class="fa-solid fa-quote-left text-orange text-sm"></i>
+            <span>Brand Promise: <strong class="text-white italic">"Today's Customer, Tomorrow's Friends."</strong></span>
+          </div>
+        </div>
+
+        <!-- Right Visual / Route Card -->
+        <div class="lg:col-span-4 hidden lg:block">
+          <div class="bg-navy-surface/90 border border-white/15 rounded-xl p-6 shadow-2xl backdrop-blur-md relative overflow-hidden">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+              <span class="text-xs uppercase tracking-widest text-orange font-bold">Live Trade Corridor</span>
+              <span class="text-[11px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-medium flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active
+              </span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-orange/20 border border-orange flex items-center justify-center text-orange shrink-0 mt-0.5">
+                  <i class="fa-solid fa-location-dot text-xs"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 uppercase font-semibold">Origin Hub</p>
+                  <p class="text-sm font-bold text-white">Davao Port / Agdao Office</p>
+                  <p class="text-[11px] text-gray-400">Customs Clearance & Documentation</p>
+                </div>
+              </div>
+
+              <!-- Route Line -->
+              <div class="ml-4 pl-4 border-l-2 border-dashed border-orange/60 py-2 space-y-1">
+                <div class="text-[11px] text-orange font-medium flex items-center gap-1">
+                  <i class="fa-solid fa-truck-fast text-xs"></i> Road & Freight Transit
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0 mt-0.5">
+                  <i class="fa-solid fa-boxes-packing text-xs"></i>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 uppercase font-semibold">Destination Hub</p>
+                  <p class="text-sm font-bold text-white">Local & International Terminals</p>
+                  <p class="text-[11px] text-gray-400">Final Mile Logistics & Receiving</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-white/10 bg-white/5 rounded-lg p-3 text-xs text-gray-300">
+              <p class="font-semibold text-white mb-1"><i class="fa-solid fa-shield-check text-orange mr-1.5"></i> Comprehensive Compliance</p>
+              <p class="text-[11px] leading-relaxed">Tariff guidance, regulatory compliance, and cargo coordination streamlined end-to-end.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TRACK SHIPMENT SECTION ==================== -->
+  <section id="tracking" class="py-16 md:py-20 bg-white border-b border-gray-200 relative">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Heading -->
+      <div class="text-center max-w-2xl mx-auto mb-10 reveal-elem">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-orange-light text-orange text-xs font-bold uppercase tracking-wider mb-3">
+          <i class="fa-solid fa-satellite-dish"></i>
+          <span>Tracking Portal</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-heading font-extrabold text-navy tracking-tight">
+          Track Your Shipment
+        </h2>
+        <p class="mt-2 text-sm sm:text-base text-gray-600">
+          Enter your tracking number to view the current shipment status.
+        </p>
+      </div>
+
+      <!-- Tracking Search Box Card -->
+      <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 sm:p-8 shadow-sm reveal-elem">
+        <form id="tracking-form" class="flex flex-col sm:flex-row gap-3">
+          <div class="relative flex-1">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+              <i class="fa-solid fa-barcode text-base"></i>
+            </div>
+            <input 
+              type="text" 
+              id="tracking-input"
+              class="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded-lg text-sm text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange focus:border-orange transition-all"
+              placeholder="Enter Tracking Number (e.g., NIS-2026-00125)"
+              autocomplete="off"
+            />
+          </div>
+          <button 
+            type="submit" 
+            id="track-submit-btn"
+            class="px-6 py-3 bg-orange hover:bg-orange-hover text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 shrink-0"
+          >
+            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+            <span>Track Shipment</span>
+          </button>
+        </form>
+
+        <!-- Tracking Error Message -->
+        <div id="tracking-error" class="hidden mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 flex items-center gap-2">
+          <i class="fa-solid fa-circle-exclamation text-red-500"></i>
+          <span id="tracking-error-text">Please enter a valid tracking number.</span>
+        </div>
+
+        <!-- Loading State -->
+        <div id="tracking-loading" class="hidden mt-8 text-center py-8">
+          <div class="inline-block w-8 h-8 border-3 border-orange border-t-transparent rounded-full animate-spin"></div>
+          <p class="text-xs text-gray-500 mt-3 font-medium">Looking up your order in our records...</p>
+        </div>
+
+        <!-- Results Card -->
+        <div id="tracking-result" class="hidden mt-8 bg-white border border-gray-200 rounded-xl p-5 sm:p-6 shadow-sm">
+          
+          <!-- Header summary -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-5 border-b border-gray-100 text-left">
+            <div>
+              <span class="text-[11px] font-semibold uppercase text-gray-400">Tracking Number</span>
+              <p id="res-tracking-id" class="text-sm font-bold text-navy font-mono">-</p>
+            </div>
+            <div>
+              <span class="text-[11px] font-semibold uppercase text-gray-400">Current Status</span>
+              <p id="res-status-badge" class="text-xs font-bold text-orange uppercase tracking-wide">-</p>
+            </div>
+            <div>
+              <span class="text-[11px] font-semibold uppercase text-gray-400">Submitted</span>
+              <p id="res-submitted" class="text-sm font-semibold text-gray-800">-</p>
+            </div>
+          </div>
+
+          <!-- Order workflow -->
+          <div class="mt-6">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-6">Order Progress</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center" id="timeline-container">
+              
+              <!-- Step 1 -->
+              <div class="timeline-step flex flex-col items-center" data-step="1">
+                <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shadow">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+                <span class="text-xs font-bold text-gray-800 mt-2">Order Submitted</span>
+                <span class="text-[10px] text-gray-400">Received</span>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="timeline-step flex flex-col items-center" data-step="2">
+                <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-xs font-bold">
+                  2
+                </div>
+                <span class="text-xs font-medium text-gray-600 mt-2">Admin Review</span>
+                <span class="text-[10px] text-gray-400">Pending</span>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="timeline-step flex flex-col items-center opacity-40" data-step="3">
+                <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-xs font-bold">
+                  3
+                </div>
+                <span class="text-xs font-medium text-gray-600 mt-2">Decision Recorded</span>
+                <span class="text-[10px] text-gray-400">Pending</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Latest update footer -->
+          <div class="mt-6 pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-2">
+            <div>
+              <span class="font-semibold text-gray-700">Latest Update:</span> 
+              <span id="res-latest-update">Order update details appear here.</span>
+            </div>
+            <button type="button" id="track-reset-btn" class="text-orange font-semibold hover:underline">
+              Track Another Package
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SERVICES SECTION ==================== -->
+  <section id="services" class="py-20 md:py-28 bg-gray-50 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16 reveal-elem">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-orange-light text-orange text-xs font-bold uppercase tracking-wider mb-3">
+          <i class="fa-solid fa-cubes-stacked"></i>
+          <span>Our Capabilities</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-heading font-extrabold text-navy tracking-tight">
+          Verified Logistics & Customs Brokerage Services
+        </h2>
+        <p class="mt-3 text-base text-gray-600 leading-relaxed">
+          Integrated solutions that streamline importation, cargo clearance, and transportation so your business can operate with confidence.
+        </p>
+      </div>
+
+      <!-- 9 Service Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        
+        <!-- 1. Customs Brokerage -->
+        <div class="service-card group bg-white border border-gray-200 rounded-xl p-7 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between reveal-elem">
+          <div>
+            <div class="w-14 h-14 rounded-lg bg-navy text-orange flex items-center justify-center text-2xl mb-5 group-hover:bg-orange group-hover:text-white transition-colors duration-300">
+              <i class="fa-solid fa-file-shield"></i>
+            </div>
+            <h3 class="text-lg font-heading font-bold text-navy mb-2.5">Customs Brokerage</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Professional customs brokerage support covering documentation, regulatory compliance, tariff classification guidance, duty-related requirements, and customs clearance coordination.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Service 01</span>
+            <button type="button" class="service-detail-btn text-xs font-bold text-orange hover:text-orange-hover flex items-center gap-1.5" data-service="Customs Brokerage" data-desc="Professional customs brokerage support covering documentation, regulatory compliance, tariff classification guidance, duty-related requirements, and customs clearance coordination. Our experienced specialists assist you in navigating Bureau of Customs procedures accurately to avoid unnecessary delays and penalties.">
+              <span>Learn More</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Trucking & Transportation -->
+        <div class="service-card group bg-white border border-gray-200 rounded-xl p-7 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between reveal-elem">
+          <div>
+            <div class="w-14 h-14 rounded-lg bg-navy text-orange flex items-center justify-center text-2xl mb-5 group-hover:bg-orange group-hover:text-white transition-colors duration-300">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <h3 class="text-lg font-heading font-bold text-navy mb-2.5">Trucking & Transportation</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Reliable transportation support designed to move cargo efficiently from origin to destination while coordinating the practical requirements of business shipments.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Service 02</span>
+            <button type="button" class="service-detail-btn text-xs font-bold text-orange hover:text-orange-hover flex items-center gap-1.5" data-service="Trucking & Transportation" data-desc="Reliable transportation support designed to move cargo efficiently from origin to destination while coordinating the practical requirements of business shipments. We facilitate road transport connections across local trade channels.">
+              <span>Learn More</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Freight Forwarding -->
+        <div class="service-card group bg-white border border-gray-200 rounded-xl p-7 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between reveal-elem">
+          <div>
+            <div class="w-14 h-14 rounded-lg bg-navy text-orange flex items-center justify-center text-2xl mb-5 group-hover:bg-orange group-hover:text-white transition-colors duration-300">
+              <i class="fa-solid fa-route"></i>
+            </div>
+            <h3 class="text-lg font-heading font-bold text-navy mb-2.5">Freight Forwarding</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Freight coordination designed to connect shipment requirements with appropriate transportation and logistics solutions.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Service 03</span>
+            <button type="button" class="service-detail-btn text-xs font-bold text-orange hover:text-orange-hover flex items-center gap-1.5" data-service="Freight Forwarding" data-desc="Freight coordination designed to connect shipment requirements with appropriate transportation and logistics solutions. We bridge origins with destinations across domestic and international trade pathways.">
+              <span>Learn More</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. Air Freight -->
+        <div class="service-card group bg-white border border-gray-200 rounded-xl p-7 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between reveal-elem">
+          <div>
+            <div class="w-14 h-14 rounded-lg bg-navy text-orange flex items-center justify-center text-2xl mb-5 group-hover:bg-orange group-hover:text-white transition-colors duration-300">
+              <i class="fa-solid fa-plane"></i>
+            </div>
+            <h3 class="text-lg font-heading font-bold text-navy mb-2.5">Air Freight</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Air freight solutions for cargo requiring an efficient air transportation option.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Service 04</span>
+            <button type="button" class="service-detail-btn text-xs font-bold text-orange hover:text-orange-hover flex items-center gap-1.5" data-service="Air Freight" data-desc="Air freight solutions for cargo requiring an efficient air transportation option. We coordinate airport transfers, cargo manifests, and expedited customs clearances for time-sensitive cargo.">
+              <span>Learn More</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 5. Sea Freight -->
+        <div class="service-card group bg-white border border-gray-200 rounded-xl p-7 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between reveal-elem">
+          <div>
+            <div class="w-14 h-14 rounded-lg bg-navy text-orange flex items-center justify-center text-2xl mb-5 group-hover:bg-orange group-hover:text-white transition-colors duration-300">
+              <i class="fa-solid fa-ship"></i>
+            </div>
+            <h3 class="text-lg font-heading font-bold text-navy mb-2.5">Sea Freight</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Sea freight support for cargo moving through maritime transportation channels and international trade networks.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Service 05</span>
+            <button type="button" class="service-detail-btn text-xs font-bold text-orange hover:text-orange-hover flex items-center gap-1.5" data-service="Sea Freight" data-desc="Sea freight support for cargo moving through maritime transportation channels and international trade networks. We coordinate containerized cargo, port documentation, and harbor logistics.">
+              <span>Learn More</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 6. Warehousing -->
+        <div class="service-card group bg-white border border-gray-200 rounded-xl p-7 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between reveal-elem">
+          <div>
+            <div class="w-14 h-14 rounded-lg bg-navy text-orange flex items-center justify-center text-2xl mb-5 group-hover:bg-orange group-hover:text-white transition-colors duration-300">
+              <i class="fa-solid fa-warehouse"></i>
+            </div>
+            <h3 class="text-lg font-heading font-bold text-navy mb-2.5">Warehousing</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Warehousing support that helps coordinate the storage and organization of cargo as part of the wider logistics process.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Service 06</span>
+            <button type="button" class="service-detail-btn text-xs font-bold text-orange hover:text-orange-hover flex items-center gap-1.5" data-service="Warehousing" data-desc="Warehousing support that helps coordinate the storage and organization of cargo as part of the wider logistics process, facilitating systematic intake, storage, and outbound release.">
+              <span>Learn More</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 7. Cargo Handling -->
+        <div class="service-card group bg-white border border-gray-200 rounded-xl p-7 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between reveal-elem">
+          <div>
+            <div class="w-14 h-14 rounded-lg bg-navy text-orange flex items-center justify-center text-2xl mb-5 group-hover:bg-orange group-hover:text-white transition-colors duration-300">
+              <i class="fa-solid fa-boxes-stacked"></i>
+            </div>
+            <h3 class="text-lg font-heading font-bold text-navy mb-2.5">Cargo Handling</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Cargo handling coordination supporting the safe movement, loading, unloading, and organization of shipments.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Service 07</span>
+            <button type="button" class="service-detail-btn text-xs font-bold text-orange hover:text-orange-hover flex items-center gap-1.5" data-service="Cargo Handling" data-desc="Cargo handling coordination supporting the safe movement, loading, unloading, and organization of shipments with safety precautions and handling protocol compliance.">
+              <span>Learn More</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 8. End-to-End Supply Chain Solutions -->
+        <div class="service-card group bg-white border border-gray-200 rounded-xl p-7 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between reveal-elem">
+          <div>
+            <div class="w-14 h-14 rounded-lg bg-navy text-orange flex items-center justify-center text-2xl mb-5 group-hover:bg-orange group-hover:text-white transition-colors duration-300">
+              <i class="fa-solid fa-diagram-project"></i>
+            </div>
+            <h3 class="text-lg font-heading font-bold text-navy mb-2.5">End-to-End Supply Chain</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Integrated logistics coordination that connects multiple stages of the supply chain into a more organized movement of goods.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Service 08</span>
+            <button type="button" class="service-detail-btn text-xs font-bold text-orange hover:text-orange-hover flex items-center gap-1.5" data-service="End-to-End Supply Chain Solutions" data-desc="Integrated logistics coordination that connects multiple stages of the supply chain into a more organized movement of goods. We align supplier receipt, customs processing, trucking, and delivery into one synchronized flow.">
+              <span>Learn More</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 9. Customs Clearance -->
+        <div class="service-card group bg-white border border-gray-200 rounded-xl p-7 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between reveal-elem">
+          <div>
+            <div class="w-14 h-14 rounded-lg bg-navy text-orange flex items-center justify-center text-2xl mb-5 group-hover:bg-orange group-hover:text-white transition-colors duration-300">
+              <i class="fa-solid fa-stamp"></i>
+            </div>
+            <h3 class="text-lg font-heading font-bold text-navy mb-2.5">Customs Clearance</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              Customs clearance coordination designed to help shipments progress through required customs procedures and documentation.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Service 09</span>
+            <button type="button" class="service-detail-btn text-xs font-bold text-orange hover:text-orange-hover flex items-center gap-1.5" data-service="Customs Clearance" data-desc="Customs clearance coordination designed to help shipments progress through required customs procedures and documentation. We assist clients in complying with import regulations, tariff valuation, and assessment workflows.">
+              <span>Learn More</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== ABOUT SECTION ==================== -->
+  <section id="about" class="py-20 md:py-28 bg-white border-t border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        
+        <!-- Left Image Column -->
+        <div class="lg:col-span-6 reveal-elem">
+          <div class="relative">
+            <!-- Main Image -->
+            <div class="rounded-2xl overflow-hidden shadow-xl border border-gray-200">
+              <img 
+                src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80" 
+                alt="Nisanho Logistics operations at cargo container terminal" 
+                class="w-full h-80 sm:h-96 lg:h-[480px] object-cover"
+                loading="lazy"
+              />
+            </div>
+            
+            <!-- Overlay Highlight Card -->
+            <div class="absolute -bottom-6 -right-4 sm:bottom-6 sm:-left-6 bg-navy text-white p-5 rounded-xl shadow-xl max-w-xs border border-white/10 hidden sm:block">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-orange flex items-center justify-center text-white text-lg">
+                  <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div>
+                  <p class="text-xs uppercase tracking-wider text-gray-300 font-medium">Established in</p>
+                  <p class="text-xl font-heading font-extrabold text-white">2019</p>
+                </div>
+              </div>
+              <p class="text-xs text-gray-300 mt-2">Specializing in seamless customs brokerage & logistics solutions across the Philippines.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Content Column -->
+        <div class="lg:col-span-6 space-y-6 reveal-elem">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-orange-light text-orange text-xs font-bold uppercase tracking-wider">
+            <i class="fa-solid fa-building"></i>
+            <span>About Nisanho Logistics</span>
+          </div>
+
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-heading font-extrabold text-navy tracking-tight leading-tight">
+            Your Logistics Partner from Origin to Destination
+          </h2>
+
+          <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
+            Nisanho Logistics Corporation specializes in seamless customs brokerage and logistics services that streamline the importation and transportation process for businesses of all sizes.
+          </p>
+
+          <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
+            The company aims to ensure that goods move smoothly from origin to destination while minimizing delays, reducing unnecessary costs, and allowing clients to focus on growing their businesses.
+          </p>
+
+          <!-- Core Value Bullets -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div class="flex items-start gap-3">
+              <i class="fa-solid fa-circle-check text-orange mt-1 text-sm"></i>
+              <div>
+                <h4 class="text-sm font-bold text-navy">Regulatory Compliance</h4>
+                <p class="text-xs text-gray-500">Rigorous adherence to trade & customs laws</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <i class="fa-solid fa-circle-check text-orange mt-1 text-sm"></i>
+              <div>
+                <h4 class="text-sm font-bold text-navy">Operational Efficiency</h4>
+                <p class="text-xs text-gray-500">Minimizing delays & logistics frictions</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <i class="fa-solid fa-circle-check text-orange mt-1 text-sm"></i>
+              <div>
+                <h4 class="text-sm font-bold text-navy">Integrated Network</h4>
+                <p class="text-xs text-gray-500">Bridging sea, air, and trucking lanes</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <i class="fa-solid fa-circle-check text-orange mt-1 text-sm"></i>
+              <div>
+                <h4 class="text-sm font-bold text-navy">Client-Centered Focus</h4>
+                <p class="text-xs text-gray-500">Transparent & responsive cargo support</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quote Link CTA -->
+          <div class="pt-4">
+            <a href="#quote" class="inline-flex items-center text-sm font-bold text-orange hover:text-orange-hover group">
+              <span>Discuss your logistics requirements with our team</span>
+              <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== WHY CHOOSE NISANHO ==================== -->
+  <section class="py-16 md:py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-14 reveal-elem">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-orange-light text-orange text-xs font-bold uppercase tracking-wider mb-3">
+          <i class="fa-solid fa-star"></i>
+          <span>Our Commitment</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-heading font-extrabold text-navy tracking-tight">
+          Why Choose Nisanho
+        </h2>
+        <p class="mt-2 text-sm sm:text-base text-gray-600">
+          Built on operational diligence, regulatory know-how, and long-term client relationships.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Card 01 -->
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow transition-all reveal-elem">
+          <div class="text-xs font-extrabold font-mono text-orange mb-3">01</div>
+          <div class="w-12 h-12 rounded-lg bg-navy/5 text-navy flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-shield-halved text-orange"></i>
+          </div>
+          <h3 class="text-base font-heading font-bold text-navy mb-2">Reliable Operations</h3>
+          <p class="text-xs text-gray-600 leading-relaxed">
+            Consistent handling and coordinated transportation designed to protect the integrity of cargo while keeping shipments on schedule.
+          </p>
+        </div>
+
+        <!-- Card 02 -->
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow transition-all reveal-elem">
+          <div class="text-xs font-extrabold font-mono text-orange mb-3">02</div>
+          <div class="w-12 h-12 rounded-lg bg-navy/5 text-navy flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-file-circle-check text-orange"></i>
+          </div>
+          <h3 class="text-base font-heading font-bold text-navy mb-2">Customs Expertise</h3>
+          <p class="text-xs text-gray-600 leading-relaxed">
+            In-depth guidance covering tariff classification, documentation verification, duty assessment, and official customs procedures.
+          </p>
+        </div>
+
+        <!-- Card 03 -->
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow transition-all reveal-elem">
+          <div class="text-xs font-extrabold font-mono text-orange mb-3">03</div>
+          <div class="w-12 h-12 rounded-lg bg-navy/5 text-navy flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-network-wired text-orange"></i>
+          </div>
+          <h3 class="text-base font-heading font-bold text-navy mb-2">Integrated Logistics</h3>
+          <p class="text-xs text-gray-600 leading-relaxed">
+            A cohesive service spectrum bringing together freight forwarding, road trucking, cargo handling, and warehousing under unified management.
+          </p>
+        </div>
+
+        <!-- Card 04 -->
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow transition-all reveal-elem">
+          <div class="text-xs font-extrabold font-mono text-orange mb-3">04</div>
+          <div class="w-12 h-12 rounded-lg bg-navy/5 text-navy flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-handshake text-orange"></i>
+          </div>
+          <h3 class="text-base font-heading font-bold text-navy mb-2">Client-Focused Service</h3>
+          <p class="text-xs text-gray-600 leading-relaxed">
+            Embodying our foundational motto â€” "Today's Customer, Tomorrow's Friends" â€” with responsive support and dedicated operational attention.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== MISSION & VISION SECTION ==================== -->
+  <section id="mission-vision" class="py-20 md:py-28 bg-navy text-white relative overflow-hidden">
+    <div class="absolute right-0 bottom-0 w-96 h-96 bg-orange/5 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal-elem">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-orange text-xs font-bold uppercase tracking-wider mb-3">
+          <i class="fa-solid fa-compass"></i>
+          <span>Strategic Direction</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-heading font-black text-white tracking-tight">
+          Our Mission & Vision
+        </h2>
+        <p class="mt-2 text-sm sm:text-base text-gray-300">
+          Guided by institutional integrity, service excellence, and sustainable industry progress.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        
+        <!-- Mission Card -->
+        <div class="bg-navy-surface border border-white/15 rounded-2xl p-8 sm:p-10 relative overflow-hidden shadow-2xl reveal-elem flex flex-col justify-between">
+          <div class="absolute top-4 right-6 text-7xl font-heading font-black text-white/5 pointer-events-none select-none">
+            MISSION
+          </div>
+          <div>
+            <div class="w-12 h-12 rounded-lg bg-orange text-white flex items-center justify-center text-xl mb-6 shadow-md">
+              <i class="fa-solid fa-bullseye"></i>
+            </div>
+            <h3 class="text-2xl font-heading font-bold text-white mb-4 flex items-center gap-3">
+              <span>Our Mission</span>
+              <span class="w-10 h-0.5 bg-orange"></span>
+            </h3>
+            <blockquote class="text-sm sm:text-base text-gray-200 leading-relaxed italic border-l-2 border-orange/80 pl-4 py-1">
+              "Nisanho Logistics Corporationâ€™s mission is to deliver incomparable customs brokerage and trucking services that facilitate global trade while building lasting relationships with our clients. We are committed to excellence, integrity, and innovation, and we strive to exceed your expectations with every interaction."
+            </blockquote>
+          </div>
+          <div class="mt-8 pt-4 border-t border-white/10 flex items-center gap-2 text-xs text-orange font-semibold uppercase tracking-wider">
+            <i class="fa-solid fa-check"></i>
+            <span>Excellence &bull; Integrity &bull; Innovation</span>
+          </div>
+        </div>
+
+        <!-- Vision Card -->
+        <div class="bg-navy-surface border border-white/15 rounded-2xl p-8 sm:p-10 relative overflow-hidden shadow-2xl reveal-elem flex flex-col justify-between">
+          <div class="absolute top-4 right-6 text-7xl font-heading font-black text-white/5 pointer-events-none select-none">
+            VISION
+          </div>
+          <div>
+            <div class="w-12 h-12 rounded-lg bg-white/10 text-orange border border-white/20 flex items-center justify-center text-xl mb-6 shadow-md">
+              <i class="fa-solid fa-eye"></i>
+            </div>
+            <h3 class="text-2xl font-heading font-bold text-white mb-4 flex items-center gap-3">
+              <span>Our Vision</span>
+              <span class="w-10 h-0.5 bg-orange"></span>
+            </h3>
+            <blockquote class="text-sm sm:text-base text-gray-200 leading-relaxed italic border-l-2 border-orange/80 pl-4 py-1">
+              "We aspire for excellence in Customs Brokerage and Trucking Industry by embracing innovation, advancing our expertise, and delivering exceptional value to our clients. Through sustainability and forward-thinking solutions, we aim to drive the future of global trade and empower businesses to thrive in an interconnected world by responding to the increasing demand for efficient logistics services through reliable trucking, air freight, sea freight, and customs clearances that ensure the smooth movement of goods locally and internationally."
+            </blockquote>
+          </div>
+          <div class="mt-8 pt-4 border-t border-white/10 flex items-center gap-2 text-xs text-orange font-semibold uppercase tracking-wider">
+            <i class="fa-solid fa-globe"></i>
+            <span>Global Trade &bull; Forward-Thinking Solutions</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Objectives Bar -->
+      <div class="mt-12 bg-white/5 border border-white/10 rounded-xl p-6 sm:p-8 reveal-elem">
+        <h4 class="text-sm font-heading font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-orange"></i>
+          <span>Core Operational Objectives</span>
+        </h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs text-gray-300">
+          <div class="flex items-center gap-2"><i class="fa-solid fa-circle text-[6px] text-orange"></i> Provide efficient & reliable logistics services</div>
+          <div class="flex items-center gap-2"><i class="fa-solid fa-circle text-[6px] text-orange"></i> Maintain strict customs & trade compliance</div>
+          <div class="flex items-center gap-2"><i class="fa-solid fa-circle text-[6px] text-orange"></i> Safe and timely cargo handling and transport</div>
+          <div class="flex items-center gap-2"><i class="fa-solid fa-circle text-[6px] text-orange"></i> Achieve high customer satisfaction & responsiveness</div>
+          <div class="flex items-center gap-2"><i class="fa-solid fa-circle text-[6px] text-orange"></i> Adopt innovative technologies & skills development</div>
+          <div class="flex items-center gap-2"><i class="fa-solid fa-circle text-[6px] text-orange"></i> Build strategic partnerships & sustainable practices</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== LOGISTICS PROCESS SECTION ==================== -->
+  <section id="process" class="py-20 md:py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal-elem">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-orange-light text-orange text-xs font-bold uppercase tracking-wider mb-3">
+          <i class="fa-solid fa-diagram-project"></i>
+          <span>Workflow Execution</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-heading font-extrabold text-navy tracking-tight">
+          Our 5-Step Logistics Process
+        </h2>
+        <p class="mt-2 text-sm sm:text-base text-gray-600">
+          A structured, transparent workflow ensuring systematic handling from first inquiry to verified delivery.
+        </p>
+      </div>
+
+      <!-- 5-Step Process Timeline -->
+      <div class="relative">
+        
+        <!-- Desktop Connecting Line -->
+        <div class="hidden md:block absolute top-1/2 left-12 right-12 h-1 bg-gray-200 -translate-y-6 z-0"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8 relative z-10">
+          
+          <!-- Step 01 -->
+          <div class="flex flex-col items-center text-center reveal-elem">
+            <div class="w-16 h-16 rounded-full bg-navy text-white flex items-center justify-center text-xl font-heading font-bold shadow-lg border-4 border-white mb-4">
+              01
+            </div>
+            <h3 class="text-base font-heading font-bold text-navy uppercase mb-1">Inquiry</h3>
+            <p class="text-xs text-gray-500 leading-relaxed">
+              Initial requirement assessment, cargo specs review, and logistical routing consultation.
+            </p>
+          </div>
+
+          <!-- Step 02 -->
+          <div class="flex flex-col items-center text-center reveal-elem">
+            <div class="w-16 h-16 rounded-full bg-navy text-white flex items-center justify-center text-xl font-heading font-bold shadow-lg border-4 border-white mb-4">
+              02
+            </div>
+            <h3 class="text-base font-heading font-bold text-navy uppercase mb-1">Planning</h3>
+            <p class="text-xs text-gray-500 leading-relaxed">
+              Modal selection (trucking, sea, air), timetable coordination, and cost structure alignment.
+            </p>
+          </div>
+
+          <!-- Step 03 -->
+          <div class="flex flex-col items-center text-center reveal-elem">
+            <div class="w-16 h-16 rounded-full bg-orange text-white flex items-center justify-center text-xl font-heading font-bold shadow-lg border-4 border-white mb-4 ring-4 ring-orange/20">
+              03
+            </div>
+            <h3 class="text-base font-heading font-bold text-navy uppercase mb-1">Documentation & Customs</h3>
+            <p class="text-xs text-gray-500 leading-relaxed">
+              Tariff classification, entry preparation, compliance checks, and customs clearance processing.
+            </p>
+          </div>
+
+          <!-- Step 04 -->
+          <div class="flex flex-col items-center text-center reveal-elem">
+            <div class="w-16 h-16 rounded-full bg-navy text-white flex items-center justify-center text-xl font-heading font-bold shadow-lg border-4 border-white mb-4">
+              04
+            </div>
+            <h3 class="text-base font-heading font-bold text-navy uppercase mb-1">Transportation</h3>
+            <p class="text-xs text-gray-500 leading-relaxed">
+              Dispatch, cargo loading, road transport or freight forwarding across active transit corridors.
+            </p>
+          </div>
+
+          <!-- Step 05 -->
+          <div class="flex flex-col items-center text-center reveal-elem">
+            <div class="w-16 h-16 rounded-full bg-navy text-white flex items-center justify-center text-xl font-heading font-bold shadow-lg border-4 border-white mb-4">
+              05
+            </div>
+            <h3 class="text-base font-heading font-bold text-navy uppercase mb-1">Delivery</h3>
+            <p class="text-xs text-gray-500 leading-relaxed">
+              Safe arrival at destination, unloading, receipt verification, and handover to client.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== REQUEST A QUOTE SECTION ==================== -->
+  <section id="quote" class="py-20 md:py-28 bg-gray-50 border-t border-b border-gray-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-12 reveal-elem">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-orange-light text-orange text-xs font-bold uppercase tracking-wider mb-3">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <span>Rate Inquiry</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-heading font-extrabold text-navy tracking-tight">
+          Let's Move Your Cargo Forward
+        </h2>
+        <p class="mt-2 text-sm sm:text-base text-gray-600">
+          Tell us what you need to ship and our team can help identify the appropriate logistics solution.
+        </p>
+      </div>
+
+      <!-- Quote Form Container -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 sm:p-10 shadow-sm reveal-elem">
+        
+        <form id="quote-form" method="POST" action="{{ url_for('api_create_order') }}" class="space-y-6" novalidate>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Full Name * -->
+            <div>
+              <label for="q-name" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+                Full Name <span class="text-orange">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="q-name" 
+                name="fullName"
+                required
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white"
+                placeholder="Juan Dela Cruz"
+              />
+              <span class="field-error hidden text-[11px] text-red-500 mt-1">Full name is required.</span>
+            </div>
+
+            <!-- Company Name -->
+            <div>
+              <label for="q-company" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+                Company Name
+              </label>
+              <input 
+                type="text" 
+                id="q-company" 
+                name="companyName"
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white"
+                placeholder="e.g., Mindanao Trading Corp."
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Email Address * -->
+            <div>
+              <label for="q-email" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+                Email Address <span class="text-orange">*</span>
+              </label>
+              <input 
+                type="email" 
+                id="q-email" 
+                name="email"
+                required
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white"
+                placeholder="juan@example.com"
+              />
+              <span class="field-error hidden text-[11px] text-red-500 mt-1">Please provide a valid email.</span>
+            </div>
+
+            <!-- Phone Number * -->
+            <div>
+              <label for="q-phone" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+                Phone Number <span class="text-orange">*</span>
+              </label>
+              <input 
+                type="tel" 
+                id="q-phone" 
+                name="phone"
+                required
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white"
+                placeholder="09XXXXXXXXX"
+              />
+              <span class="field-error hidden text-[11px] text-red-500 mt-1">Valid phone number is required.</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Service Required * -->
+            <div>
+              <label for="q-service" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+                Service Required <span class="text-orange">*</span>
+              </label>
+              <select 
+                id="q-service" 
+                name="service"
+                required
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-dark focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white"
+              >
+                <option value="">Select Service Required</option>
+                <option value="Customs Brokerage">Customs Brokerage</option>
+                <option value="Trucking & Transportation">Trucking & Transportation</option>
+                <option value="Freight Forwarding">Freight Forwarding</option>
+                <option value="Air Freight">Air Freight</option>
+                <option value="Sea Freight">Sea Freight</option>
+                <option value="Warehousing">Warehousing</option>
+                <option value="Cargo Handling">Cargo Handling</option>
+                <option value="End-to-End Supply Chain">End-to-End Supply Chain</option>
+                <option value="Customs Clearance">Customs Clearance</option>
+              </select>
+              <span class="field-error hidden text-[11px] text-red-500 mt-1">Please select a service.</span>
+            </div>
+
+            <!-- Preferred Shipping Method -->
+            <div>
+              <label for="q-method" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+                Preferred Shipping Method
+              </label>
+              <select 
+                id="q-method" 
+                name="shippingMethod"
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-dark focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white"
+              >
+                <option value="Not Sure">Not Sure / Recommend Best Option</option>
+                <option value="Trucking">Trucking</option>
+                <option value="Air">Air</option>
+                <option value="Sea">Sea</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Origin -->
+            <div>
+              <label for="q-origin" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+                Origin
+              </label>
+              <input 
+                type="text" 
+                id="q-origin" 
+                name="origin"
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white"
+                placeholder="City or Port of Origin"
+              />
+            </div>
+
+            <!-- Destination -->
+            <div>
+              <label for="q-destination" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+                Destination
+              </label>
+              <input 
+                type="text" 
+                id="q-destination" 
+                name="destination"
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white"
+                placeholder="City or Port of Destination"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Cargo Type -->
+            <div>
+              <label for="q-cargo" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+                Cargo Type
+              </label>
+              <input 
+                type="text" 
+                id="q-cargo" 
+                name="cargoType"
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white"
+                placeholder="e.g., General goods, palletized items"
+              />
+            </div>
+
+            <!-- Estimated Weight / Volume -->
+            <div>
+              <label for="q-weight" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+                Estimated Weight / Volume
+              </label>
+              <input 
+                type="text" 
+                id="q-weight" 
+                name="weight"
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white"
+                placeholder="e.g., 500 kg or 2 CBM"
+              />
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div>
+            <label for="q-message" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+              Message / Specific Requirements
+            </label>
+            <textarea 
+              id="q-message" 
+              name="message"
+              rows="3"
+              class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white"
+              placeholder="Additional details regarding your shipment schedule, customs documents, or packaging..."
+            ></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-2">
+            <button 
+              type="submit" 
+              id="quote-submit-btn"
+              class="w-full sm:w-auto px-8 py-3.5 bg-orange hover:bg-orange-hover text-white text-sm font-semibold rounded-lg shadow-md hover:shadow-orange/30 transition-all flex items-center justify-center gap-2"
+            >
+              <i class="fa-solid fa-paper-plane text-xs"></i>
+              <span>Submit Quote Request</span>
+            </button>
+          </div>
+
+        </form>
+
+        <div id="quote-error" class="hidden mt-4 p-4 rounded-lg border border-rose-400/30 bg-rose-500/10 text-sm text-rose-200" role="alert" aria-live="polite"></div>
+
+        <!-- Quote Success Card -->
+        <div id="quote-success" class="hidden mt-6 p-6 rounded-xl bg-emerald-50 border border-emerald-200 text-center">
+          <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-xl mb-3">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <h4 class="text-base font-heading font-bold text-navy">Order Submitted</h4>
+          <p class="text-sm text-gray-700 mt-2 max-w-lg mx-auto">
+            Thank you. Your order has been saved and is awaiting administrator review.
+          </p>
+          <button type="button" id="quote-reset-btn" class="mt-4 px-4 py-2 bg-navy text-white text-xs font-semibold rounded hover:bg-navy-light transition-colors">
+            Send Another Inquiry
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== ACHIEVEMENTS & COMMUNITY ("BEYOND LOGISTICS") ==================== -->
+  <section id="community" class="py-20 md:py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16 reveal-elem">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-orange-light text-orange text-xs font-bold uppercase tracking-wider mb-3">
+          <i class="fa-solid fa-hands-holding-heart"></i>
+          <span>Community Engagement</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-heading font-extrabold text-navy tracking-tight">
+          Beyond Logistics
+        </h2>
+        <p class="mt-2 text-sm sm:text-base text-gray-600">
+          Selected Company Activities & Community Involvement
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Activity 1 -->
+        <div class="group relative rounded-xl overflow-hidden shadow-sm border border-gray-200 bg-navy reveal-elem">
+          <img 
+            src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=80" 
+            alt="Community relief and distribution outreach" 
+            class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-90"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent flex flex-col justify-end p-5">
+            <span class="text-[10px] uppercase font-bold tracking-wider text-orange">Outreach & Giving</span>
+            <h4 class="text-base font-heading font-bold text-white mt-1">Community Relief Assistance</h4>
+            <p class="text-xs text-gray-300 mt-1 line-clamp-2">Participating in food packs distribution and support initiatives for local families.</p>
+          </div>
+        </div>
+
+        <!-- Activity 2 -->
+        <div class="group relative rounded-xl overflow-hidden shadow-sm border border-gray-200 bg-navy reveal-elem">
+          <img 
+            src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=800&q=80" 
+            alt="Team solidarity and community support" 
+            class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-90"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent flex flex-col justify-end p-5">
+            <span class="text-[10px] uppercase font-bold tracking-wider text-orange">Civic Partnership</span>
+            <h4 class="text-base font-heading font-bold text-white mt-1">Local Community Support</h4>
+            <p class="text-xs text-gray-300 mt-1 line-clamp-2">Building lasting connections and actively extending assistance within our local neighborhood.</p>
+          </div>
+        </div>
+
+        <!-- Activity 3 -->
+        <div class="group relative rounded-xl overflow-hidden shadow-sm border border-gray-200 bg-navy reveal-elem">
+          <img 
+            src="https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?auto=format&fit=crop&w=800&q=80" 
+            alt="Certificate of appreciation and business recognition" 
+            class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-90"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent flex flex-col justify-end p-5">
+            <span class="text-[10px] uppercase font-bold tracking-wider text-orange">Recognition</span>
+            <h4 class="text-base font-heading font-bold text-white mt-1">Industry & Partner Appreciation</h4>
+            <p class="text-xs text-gray-300 mt-1 line-clamp-2">Recognized by partners for consistent logistics service and ethical business cooperation.</p>
+          </div>
+        </div>
+
+        <!-- Activity 4 -->
+        <div class="group relative rounded-xl overflow-hidden shadow-sm border border-gray-200 bg-navy reveal-elem">
+          <img 
+            src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80" 
+            alt="Professional coordination and team collaboration" 
+            class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-90"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent flex flex-col justify-end p-5">
+            <span class="text-[10px] uppercase font-bold tracking-wider text-orange">Collaboration</span>
+            <h4 class="text-base font-heading font-bold text-white mt-1">Trade & Client Seminars</h4>
+            <p class="text-xs text-gray-300 mt-1 line-clamp-2">Coordinating trade requirements and regulatory updates with stakeholders and partners.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== CONTACT SECTION ==================== -->
+  <section id="contact" class="py-20 md:py-28 bg-gray-50 border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal-elem">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-orange-light text-orange text-xs font-bold uppercase tracking-wider mb-3">
+          <i class="fa-solid fa-headset"></i>
+          <span>Get in Touch</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-heading font-extrabold text-navy tracking-tight">
+          Let's Talk About Your Logistics Needs
+        </h2>
+        <p class="mt-2 text-sm sm:text-base text-gray-600">
+          Our team in Davao City is ready to answer inquiries regarding customs clearance, brokerage, and freight movements.
+        </p>
+      </div>
+
+      <!-- 3 Contact Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        
+        <!-- Phone -->
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm flex items-start gap-4 reveal-elem">
+          <div class="w-12 h-12 rounded-lg bg-navy text-orange flex items-center justify-center text-xl shrink-0">
+            <i class="fa-solid fa-phone"></i>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">Call Us</h3>
+            <p class="text-sm font-bold text-navy mt-1">
+              <a href="tel:09454005090" class="hover:text-orange transition-colors">09454005090</a>
+            </p>
+            <p class="text-sm font-bold text-navy">
+              <a href="tel:09630328438" class="hover:text-orange transition-colors">09630328438</a>
+            </p>
+            <span class="text-[11px] text-gray-500 mt-1 block">Operational Support Lines</span>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm flex items-start gap-4 reveal-elem">
+          <div class="w-12 h-12 rounded-lg bg-navy text-orange flex items-center justify-center text-xl shrink-0">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">Email Us</h3>
+            <p class="text-xs font-semibold text-navy mt-1 break-all">
+              <a href="mailto:yurongdivanie26.nisanho@gmail.com" class="hover:text-orange transition-colors">yurongdivanie26.nisanho@gmail.com</a>
+            </p>
+            <p class="text-xs font-semibold text-navy break-all mt-0.5">
+              <a href="mailto:cuberofrancis450@gmail.com" class="hover:text-orange transition-colors">cuberofrancis450@gmail.com</a>
+            </p>
+            <span class="text-[11px] text-gray-500 mt-1 block">Inquiries & Quotations</span>
+          </div>
+        </div>
+
+        <!-- Office -->
+        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm flex items-start gap-4 reveal-elem">
+          <div class="w-12 h-12 rounded-lg bg-navy text-orange flex items-center justify-center text-xl shrink-0">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">Visit Our Office</h3>
+            <p class="text-sm font-bold text-navy mt-1">Lakandula Street, Agdao</p>
+            <p class="text-sm text-gray-700">Davao City 8000, Philippines</p>
+            <span class="text-[11px] text-gray-500 mt-1 block">Headquarters</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Contact Message Form & Map Card Split -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left: Quick Contact Form -->
+        <div class="lg:col-span-7 bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm reveal-elem">
+          <h3 class="text-lg font-heading font-bold text-navy mb-4">Send a Direct Message</h3>
+          <form id="contact-form" method="POST" action="{{ url_for('api_create_contact_message') }}" class="space-y-4" novalidate>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="c-name" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Your Name *</label>
+                <input type="text" id="c-name" required class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white" placeholder="Name" />
+              </div>
+              <div>
+                <label for="c-email" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Email Address *</label>
+                <input type="email" id="c-email" required class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white" placeholder="email@address.com" />
+              </div>
+            </div>
+            <div>
+              <label for="c-subject" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Subject</label>
+              <input type="text" id="c-subject" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white" placeholder="Customs inquiry / Trucking request" />
+            </div>
+            <div>
+              <label for="c-message" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Message *</label>
+              <textarea id="c-message" required rows="4" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange focus:bg-white" placeholder="How can our team assist you?"></textarea>
+            </div>
+            <button type="submit" id="contact-submit-btn" class="px-6 py-3 bg-navy hover:bg-navy-light text-white text-sm font-semibold rounded-lg shadow transition-colors">
+              Send Message
+            </button>
+          </form>
+
+          <div id="contact-error" class="hidden mt-4 p-4 rounded-lg border border-rose-400/30 bg-rose-500/10 text-sm text-rose-200" role="alert" aria-live="polite"></div>
+
+          <!-- Contact Success Alert -->
+          <div id="contact-success" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-lg text-xs">
+            <i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i>
+            Thank you. Your message has been transmitted to our office. We will reply promptly.
+          </div>
+        </div>
+
+        <!-- Right: Map-Style Location Card -->
+        <div class="lg:col-span-5 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm reveal-elem">
+          <!-- Stylized Map Graphic -->
+          <div class="h-56 bg-navy relative flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 pattern-grid opacity-30"></div>
+            <!-- Concentric location rings -->
+            <div class="w-32 h-32 rounded-full border border-orange/40 flex items-center justify-center">
+              <div class="w-20 h-20 rounded-full border border-orange/60 flex items-center justify-center animate-ping"></div>
+            </div>
+            <!-- Pin -->
+            <div class="absolute flex flex-col items-center">
+              <div class="w-10 h-10 rounded-full bg-orange text-white flex items-center justify-center shadow-lg text-lg">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <span class="mt-2 text-[10px] font-bold uppercase tracking-widest text-white bg-navy-surface px-2 py-0.5 rounded border border-white/20">Davao Hub</span>
+            </div>
+          </div>
+
+          <div class="p-6">
+            <h4 class="text-base font-heading font-bold text-navy">Office Location</h4>
+            <p class="text-sm text-gray-700 mt-1 font-medium">Lakandula Street, Agdao, Davao City 8000</p>
+            <p class="text-xs text-gray-500 mt-1">Conveniently situated near major Davao shipping avenues and cargo terminals.</p>
+            
+            <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+              <span class="text-xs text-gray-400">Postal Code: 8000</span>
+              <a 
+                href="https://maps.google.com/?q=Lakandula+Street+Agdao+Davao+City+8000" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-xs font-bold text-orange hover:text-orange-hover"
+              >
+                <span>View on Map</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-navy text-white border-t border-white/10 pt-16 pb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+        
+        <!-- Company Brand Info -->
+        <div class="lg:col-span-4 space-y-4">
+          <div class="flex items-center gap-3">
+            <img src="{{ url_for('static', filename='images/nisanho-logo.jpg') }}" alt="Nisanho Logistics Corporation logo" class="w-12 h-12 rounded-full object-cover bg-white shadow-md" />
+            <div>
+              <span class="font-heading font-extrabold text-white text-base tracking-wider block">NISANHO</span>
+              <span class="text-[9px] tracking-[0.2em] font-semibold text-orange uppercase block">Logistics Corporation</span>
+            </div>
+          </div>
+
+          <p class="text-xs text-gray-300 leading-relaxed max-w-sm">
+            Seamless customs brokerage, trucking, freight forwarding, and end-to-end supply chain logistics services. Established in 2019 in Davao City.
+          </p>
+
+          <div class="pt-2">
+            <span class="text-[11px] text-gray-400 uppercase tracking-widest font-semibold block">Company Tagline</span>
+            <p class="text-sm font-semibold text-orange italic mt-0.5">
+              "Today's Customer, Tomorrow's Friends."
+            </p>
+          </div>
+        </div>
+
+        <!-- Col 2: Services -->
+        <div class="lg:col-span-3 space-y-3">
+          <h4 class="text-xs font-heading font-bold text-white uppercase tracking-wider">Our Services</h4>
+          <ul class="space-y-2 text-xs text-gray-300">
+            <li><a href="#services" class="hover:text-orange transition-colors">Customs Brokerage</a></li>
+            <li><a href="#services" class="hover:text-orange transition-colors">Trucking & Transportation</a></li>
+            <li><a href="#services" class="hover:text-orange transition-colors">Freight Forwarding</a></li>
+            <li><a href="#services" class="hover:text-orange transition-colors">Air Freight</a></li>
+            <li><a href="#services" class="hover:text-orange transition-colors">Sea Freight</a></li>
+            <li><a href="#services" class="hover:text-orange transition-colors">Warehousing & Cargo Handling</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Company & Quick Links -->
+        <div class="lg:col-span-2 space-y-3">
+          <h4 class="text-xs font-heading font-bold text-white uppercase tracking-wider">Company</h4>
+          <ul class="space-y-2 text-xs text-gray-300">
+            <li><a href="#about" class="hover:text-orange transition-colors">About Us</a></li>
+            <li><a href="#mission-vision" class="hover:text-orange transition-colors">Mission & Vision</a></li>
+            <li><a href="#process" class="hover:text-orange transition-colors">Logistics Process</a></li>
+            <li><a href="#tracking" class="hover:text-orange transition-colors">Track Shipment</a></li>
+            <li><a href="#quote" class="hover:text-orange transition-colors">Request a Quote</a></li>
+            <li><a href="#contact" class="hover:text-orange transition-colors">Contact</a></li>
+            <li><a href="{{ url_for('customer_login') }}" class="hover:text-orange transition-colors text-xs">Customer Login</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Verified Contact Info -->
+        <div class="lg:col-span-3 space-y-3">
+          <h4 class="text-xs font-heading font-bold text-white uppercase tracking-wider">Headquarters</h4>
+          <div class="text-xs text-gray-300 space-y-2">
+            <p class="flex items-start gap-2">
+              <i class="fa-solid fa-location-dot text-orange mt-0.5"></i>
+              <span>Lakandula Street, Agdao, Davao City 8000</span>
+            </p>
+            <p class="flex items-start gap-2">
+              <i class="fa-solid fa-phone text-orange mt-0.5"></i>
+              <span>09454005090 / 09630328438</span>
+            </p>
+            <p class="flex items-start gap-2 break-all">
+              <i class="fa-solid fa-envelope text-orange mt-0.5"></i>
+              <span>yurongdivanie26.nisanho@gmail.com</span>
+            </p>
+            <p class="flex items-start gap-2 break-all">
+              <i class="fa-solid fa-envelope text-orange mt-0.5"></i>
+              <span>cuberofrancis450@gmail.com</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
+        <p>&copy; <span id="current-year">2026</span> Nisanho Logistics Corporation. All Rights Reserved.</p>
+        <p class="text-[11px] text-gray-400">
+          Customs Brokerage &bull; Freight Forwarding &bull; Trucking Services
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ==================== SERVICE DETAIL MODAL ==================== -->
+  <div id="service-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-navy/80 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="modal-service-title">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-200 relative transform transition-all">
+      <button type="button" id="modal-close-btn" class="absolute top-4 right-4 text-gray-400 hover:text-navy p-2 rounded-lg" aria-label="Close details">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="w-12 h-12 rounded-lg bg-orange-light text-orange flex items-center justify-center text-xl mb-4">
+        <i class="fa-solid fa-cubes-stacked"></i>
+      </div>
+
+      <h3 id="modal-service-title" class="text-xl font-heading font-extrabold text-navy">Service Details</h3>
+      <p id="modal-service-desc" class="text-sm text-gray-600 mt-3 leading-relaxed">Detailed service information.</p>
+
+      <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
+        <button type="button" id="modal-cancel-btn" class="px-4 py-2 text-xs font-semibold text-gray-600 hover:text-gray-900">Close</button>
+        <a href="#quote" id="modal-quote-btn" class="px-5 py-2.5 bg-orange hover:bg-orange-hover text-white text-xs font-semibold rounded-lg shadow">
+          Inquire About This Service
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BACK TO TOP BUTTON ==================== -->
+  <button 
+    id="back-to-top" 
+    type="button" 
+    class="fixed bottom-6 right-6 z-40 hidden w-11 h-11 rounded-full bg-orange hover:bg-orange-hover text-white shadow-lg items-center justify-center text-sm transition-all duration-300 hover:scale-110 focus:outline-none"
+    aria-label="Back to top"
+  >
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <!-- ==================== VANILLA JAVASCRIPT ==================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Mobile Menu Toggle
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const hamburgerIcon = document.getElementById('hamburger-icon');
+      const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+      if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+          const isHidden = mobileMenu.classList.contains('hidden');
+          if (isHidden) {
+            mobileMenu.classList.remove('hidden');
+            hamburgerIcon.classList.remove('fa-bars');
+            hamburgerIcon.classList.add('fa-xmark');
+            mobileBtn.setAttribute('aria-expanded', 'true');
+          } else {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('fa-xmark');
+            hamburgerIcon.classList.add('fa-bars');
+            mobileBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            hamburgerIcon.classList.remove('fa-xmark');
+            hamburgerIcon.classList.add('fa-bars');
+            mobileBtn.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      // 2. Sticky Header and Back-to-Top on Scroll
+      const header = document.getElementById('main-header');
+      const backToTop = document.getElementById('back-to-top');
+
+      window.addEventListener('scroll', () => {
+        const scrollPos = window.scrollY;
+
+        if (scrollPos > 60) {
+          header.classList.add('shadow-lg', 'bg-navy/98');
+          header.classList.remove('bg-navy/95');
+        } else {
+          header.classList.remove('shadow-lg', 'bg-navy/98');
+          header.classList.add('bg-navy/95');
+        }
+
+        if (backToTop) {
+          if (scrollPos > 400) {
+            backToTop.classList.remove('hidden');
+            backToTop.classList.add('flex');
+          } else {
+            backToTop.classList.add('hidden');
+            backToTop.classList.remove('flex');
+          }
+        }
+      });
+
+      if (backToTop) {
+        backToTop.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      // 3. Live order tracking
+      const trackingForm = document.getElementById('tracking-form');
+      const trackingInput = document.getElementById('tracking-input');
+      const trackingLoading = document.getElementById('tracking-loading');
+      const trackingResult = document.getElementById('tracking-result');
+      const trackingError = document.getElementById('tracking-error');
+      const trackingErrorText = document.getElementById('tracking-error-text');
+      const trackResetBtn = document.getElementById('track-reset-btn');
+      const trackingApiTemplate = document.querySelector('meta[name="tracking-api-template"]').content;
+
+      if (trackingForm) {
+        trackingForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const code = trackingInput.value.trim().toUpperCase();
+          if (!code) {
+            showTrackingError('Please enter a tracking number to proceed.');
+            return;
+          }
+          if (code.length < 5) {
+            showTrackingError('Tracking number must be at least 5 characters.');
+            return;
+          }
+          runTracking(code);
+        });
+      }
+
+      function showTrackingError(msg) {
+        trackingErrorText.textContent = msg;
+        trackingError.classList.remove('hidden');
+        trackingResult.classList.add('hidden');
+        trackingLoading.classList.add('hidden');
+      }
+
+      function runTracking(code) {
+        trackingError.classList.add('hidden');
+        trackingResult.classList.add('hidden');
+        trackingLoading.classList.remove('hidden');
+        const apiUrl = trackingApiTemplate.replace('TRACKING_NUMBER', encodeURIComponent(code));
+        fetch(apiUrl, { headers: { 'Accept': 'application/json' } })
+          .then(async (res) => {
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Unable to look up that tracking number.');
+            return data;
+          })
+          .then((data) => {
+          trackingLoading.classList.add('hidden');
+          renderTrackingResult(data);
+          })
+          .catch((error) => {
+            showTrackingError(error.message);
+          });
+      }
+
+      function renderTrackingResult(data) {
+        const statusLabels = { pending: 'Pending', approved: 'Approved', rejected: 'Rejected' };
+        const status = statusLabels[data.status] ? data.status : 'pending';
+        document.getElementById('res-tracking-id').textContent = data.tracking_number;
+        const statusBadge = document.getElementById('res-status-badge');
+        statusBadge.textContent = statusLabels[status];
+        statusBadge.className = 'text-xs font-bold uppercase tracking-wide ' +
+          (status === 'approved' ? 'text-emerald-300' : status === 'rejected' ? 'text-rose-300' : 'text-amber-300');
+        document.getElementById('res-submitted').textContent = data.submitted_at;
+        document.getElementById('res-latest-update').textContent = data.latest_update;
+        const reviewNote = document.querySelector('.timeline-step[data-step="2"] span:last-child');
+        const decisionNote = document.querySelector('.timeline-step[data-step="3"] span:last-child');
+        reviewNote.textContent = status === 'pending' ? 'In review' : 'Complete';
+        decisionNote.textContent = status === 'pending' ? 'Pending' : status === 'approved' ? 'Approved' : 'Rejected';
+
+        const timelineSteps = document.querySelectorAll('.timeline-step');
+        const activeStep = status === 'pending' ? 2 : 3;
+        timelineSteps.forEach(stepEl => {
+          const stepNum = parseInt(stepEl.getAttribute('data-step'), 10);
+          const iconContainer = stepEl.querySelector('div');
+          const label = stepEl.querySelector('span:first-of-type');
+
+          if (stepNum < activeStep) {
+            stepEl.classList.remove('opacity-40');
+            iconContainer.className = 'w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shadow';
+            iconContainer.innerHTML = '<i class="fa-solid fa-check"></i>';
+            label.className = 'text-xs font-bold text-gray-800 mt-2';
+          } else if (stepNum === activeStep) {
+            stepEl.classList.remove('opacity-40');
+            const decisionClass = status === 'rejected' ? 'bg-rose-500 ring-rose-500/20' : 'bg-orange ring-orange/20';
+            iconContainer.className = 'w-8 h-8 rounded-full ' + decisionClass + ' text-white flex items-center justify-center text-xs font-bold shadow ring-4';
+            iconContainer.textContent = status === 'pending' ? '2' : status === 'approved' ? '✓' : '×';
+            label.className = 'text-xs font-bold ' + (status === 'rejected' ? 'text-rose-300' : 'text-orange') + ' mt-2';
+          } else {
+            stepEl.classList.add('opacity-40');
+            iconContainer.className = 'w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-xs font-bold';
+            iconContainer.innerHTML = stepNum;
+            label.className = 'text-xs font-medium text-gray-600 mt-2';
+          }
+        });
+
+        trackingResult.classList.remove('hidden');
+      }
+
+      if (trackResetBtn) {
+        trackResetBtn.addEventListener('click', () => {
+          trackingResult.classList.add('hidden');
+          trackingError.classList.add('hidden');
+          trackingInput.value = '';
+          trackingInput.focus();
+        });
+      }
+
+      // 4. Service Details Modal
+      const serviceModal = document.getElementById('service-modal');
+      const modalCloseBtn = document.getElementById('modal-close-btn');
+      const modalCancelBtn = document.getElementById('modal-cancel-btn');
+      const modalTitle = document.getElementById('modal-service-title');
+      const modalDesc = document.getElementById('modal-service-desc');
+      const modalQuoteBtn = document.getElementById('modal-quote-btn');
+      const serviceDetailBtns = document.querySelectorAll('.service-detail-btn');
+
+      serviceDetailBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const service = btn.getAttribute('data-service');
+          const desc = btn.getAttribute('data-desc');
+          modalTitle.textContent = service;
+          modalDesc.textContent = desc;
+          serviceModal.classList.remove('hidden');
+        });
+      });
+
+      function closeModal() {
+        serviceModal.classList.add('hidden');
+      }
+
+      if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
+      if (modalCancelBtn) modalCancelBtn.addEventListener('click', closeModal);
+      if (modalQuoteBtn) modalQuoteBtn.addEventListener('click', closeModal);
+      if (serviceModal) {
+        serviceModal.addEventListener('click', (e) => {
+          if (e.target === serviceModal) closeModal();
+        });
+      }
+
+      // 5. Quote Form Validation & Submission
+      const quoteForm = document.getElementById('quote-form');
+      const quoteSuccess = document.getElementById('quote-success');
+      const quoteError = document.getElementById('quote-error');
+      const quoteResetBtn = document.getElementById('quote-reset-btn');
+
+      if (quoteForm) {
+        quoteForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          let isValid = true;
+
+          // Validate Full Name
+          const nameInput = document.getElementById('q-name');
+          const nameErr = nameInput.nextElementSibling;
+          if (!nameInput.value.trim()) {
+            nameErr.classList.remove('hidden');
+            isValid = false;
+          } else {
+            nameErr.classList.add('hidden');
+          }
+
+          // Validate Email
+          const emailInput = document.getElementById('q-email');
+          const emailErr = emailInput.nextElementSibling;
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(emailInput.value.trim())) {
+            emailErr.classList.remove('hidden');
+            isValid = false;
+          } else {
+            emailErr.classList.add('hidden');
+          }
+
+          // Validate Phone
+          const phoneInput = document.getElementById('q-phone');
+          const phoneErr = phoneInput.nextElementSibling;
+          if (!/^[0-9+\-()\s]{7,30}$/.test(phoneInput.value.trim())) {
+            phoneErr.classList.remove('hidden');
+            isValid = false;
+          } else {
+            phoneErr.classList.add('hidden');
+          }
+
+          // Validate Service
+          const serviceInput = document.getElementById('q-service');
+          const serviceErr = serviceInput.nextElementSibling;
+          if (!serviceInput.value) {
+            serviceErr.classList.remove('hidden');
+            isValid = false;
+          } else {
+            serviceErr.classList.add('hidden');
+          }
+
+          if (isValid) {
+            const submitBtn = document.getElementById('quote-submit-btn');
+            quoteError.classList.add('hidden');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Submitting Order...';
+
+            const formData = {
+              fullName: document.getElementById('q-name').value.trim(),
+              companyName: document.getElementById('q-company').value.trim(),
+              email: document.getElementById('q-email').value.trim(),
+              phone: document.getElementById('q-phone').value.trim(),
+              service: document.getElementById('q-service').value,
+              shippingMethod: document.getElementById('q-method').value,
+              origin: document.getElementById('q-origin').value.trim(),
+              destination: document.getElementById('q-destination').value.trim(),
+              cargoType: document.getElementById('q-cargo').value.trim(),
+              weight: document.getElementById('q-weight').value.trim(),
+              message: document.getElementById('q-message').value.trim(),
+            };
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+            fetch(quoteForm.action, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+              body: JSON.stringify(formData),
+            })
+              .then(async (res) => {
+                const data = await res.json();
+                if (!res.ok) {
+                  const details = data.errors ? Object.values(data.errors).join(' ') : data.error;
+                  throw new Error(details || 'The order could not be saved.');
+                }
+                return data;
+              })
+              .then((data) => {
+                quoteForm.classList.add('hidden');
+                quoteSuccess.querySelector('h4').textContent = 'Order Submitted';
+                quoteSuccess.querySelector('p').textContent = 'Thank you, ' + formData.fullName +
+                  '. Your order is pending review. Track it with: ' + data.tracking_number + '.';
+                quoteSuccess.classList.remove('hidden');
+              })
+              .catch((err) => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs"></i><span>Submit Quote Request</span>';
+                quoteError.textContent = err.message || 'The order could not be saved. Please try again.';
+                quoteError.classList.remove('hidden');
+              });
+          }
+        });
+      }
+
+      if (quoteResetBtn) {
+        quoteResetBtn.addEventListener('click', () => {
+          quoteSuccess.classList.add('hidden');
+          quoteForm.reset();
+          const submitBtn = document.getElementById('quote-submit-btn');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs"></i><span>Submit Quote Request</span>';
+          quoteForm.classList.remove('hidden');
+        });
+      }
+
+      // 6. Direct Contact Form
+      const contactForm = document.getElementById('contact-form');
+      const contactSuccess = document.getElementById('contact-success');
+      const contactError = document.getElementById('contact-error');
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = document.getElementById('c-name').value.trim();
+          const email = document.getElementById('c-email').value.trim();
+          const message = document.getElementById('c-message').value.trim();
+          const subject = document.getElementById('c-subject').value.trim();
+
+          if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !message) {
+            contactError.textContent = 'Enter your name, a valid email address, and a message.';
+            contactError.classList.remove('hidden');
+            return;
+          }
+
+          const btn = document.getElementById('contact-submit-btn');
+          contactError.classList.add('hidden');
+          contactSuccess.classList.add('hidden');
+          btn.disabled = true;
+          btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Sending...';
+          try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+            const response = await fetch(contactForm.action, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+              body: JSON.stringify({ fullName: name, email, subject, message }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+              const details = data.errors ? Object.values(data.errors).join(' ') : data.error;
+              throw new Error(details || 'Your message could not be saved.');
+            }
+            contactForm.reset();
+            contactSuccess.classList.remove('hidden');
+          } catch (error) {
+            contactError.textContent = error.message || 'Your message could not be saved. Please try again.';
+            contactError.classList.remove('hidden');
+          } finally {
+            btn.disabled = false;
+            btn.innerHTML = 'Send Message';
+          }
+        });
+      }
+
+      // 7. Scroll Reveal Animation using IntersectionObserver
+      const revealElements = document.querySelectorAll('.reveal-elem');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('active');
+            }
+          });
+        }, {
+          threshold: 0.12,
+          rootMargin: '0px 0px -40px 0px'
+        });
+
+        revealElements.forEach(el => observer.observe(el));
+      } else {
+        revealElements.forEach(el => el.classList.add('active'));
+      }
+
+      // 8. Footer Year
+      const yearEl = document.getElementById('current-year');
+      if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
+      }
+    });
+  </script>
+</body>
+</html>

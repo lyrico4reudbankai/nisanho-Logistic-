@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
+  <title>{% block title %}{{ title or 'Nisanho Logistics Corporation' }}{% endblock %}</title>
+  <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='images/nisanho-logo.jpg') }}" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: { DEFAULT: '#000A3C', surface: '#05124A', light: '#0E1D66', dark: '#000624' },
+            orange: { DEFAULT: '#EE6D1F', hover: '#D55A12', light: '#FFF4ED' },
+          },
+          fontFamily: { sans: ['Inter','system-ui','sans-serif'], heading: ['Montserrat','sans-serif'] },
+          boxShadow: { glow: '0 0 24px rgba(238,109,31,0.25)' }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}" />
+  {% block head_extra %}{% endblock %}
+</head>
+<body class="antialiased min-h-screen bg-[#000624] text-slate-100" data-auth-role="{% if session.get('admin_id') %}admin{% elif session.get('customer_id') %}customer{% else %}guest{% endif %}">
+  {% block body %}{% endblock %}
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous" defer></script>
+  <script src="{{ url_for('static', filename='js/realtime.js') }}" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
+

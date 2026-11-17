@@ -1,0 +1,82 @@
+﻿{% extends "admin/base.html" %}
+{% block page_title %}Orders Management{% endblock %}
+{% block page_subtitle %}View, search, filter, approve, and reject customer orders{% endblock %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <form method="GET" action="{{ url_for('admin_orders') }}" class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+        <div class="md:col-span-5">
+          <label class="label">Search</label>
+          <input type="text" name="q" value="{{ q }}" class="input-field" placeholder="Tracking, name, email, phone">
+        </div>
+        <div class="md:col-span-3">
+          <label class="label">Status</label>
+          <select name="status" class="input-field">
+            <option value="">All statuses</option>
+            <option value="pending" {% if status=='pending' %}selected{% endif %}>Pending</option>
+            <option value="approved" {% if status=='approved' %}selected{% endif %}>Approved</option>
+            <option value="rejected" {% if status=='rejected' %}selected{% endif %}>Rejected</option>
+          </select>
+        </div>
+        <div class="md:col-span-2">
+          <label class="label">Sort</label>
+          <select name="sort" class="input-field">
+            <option value="submission_date" {% if sort=='submission_date' %}selected{% endif %}>Submitted</option>
+            <option value="full_name" {% if sort=='full_name' %}selected{% endif %}>Customer</option>
+            <option value="status" {% if sort=='status' %}selected{% endif %}>Status</option>
+            <option value="id" {% if sort=='id' %}selected{% endif %}>ID</option>
+          </select>
+        </div>
+        <div class="md:col-span-2 flex gap-2">
+          <input type="hidden" name="dir" value="{{ 'asc' if direction=='asc' and sort==request.args.get('sort') else direction }}">
+          <button type="submit" class="btn-cyan px-4 py-2.5 rounded-lg font-semibold flex-1">Filter</button>
+          <a href="{{ url_for('admin_orders') }}" class="btn-outline-cyan px-4 py-2.5 rounded-lg font-semibold">Reset</a>
+        </div>
+      </form>
+    </div>
+    <div class="card-body p-0 overflow-x-auto">
+      {% if orders %}
+      <table class="admin-table min-w-[1000px]">
+        <thead>
+          <tr><th>ID</th><th>Tracking</th><th>Customer</th><th>Contact</th><th>Service & Route</th><th>Status</th><th>Submitted</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          {% for o in orders %}
+          <tr>
+            <td>#{{ o.id }}</td>
+            <td class="tracking-mono text-cyan-300"><a href="{{ url_for('admin_order_details', order_id=o.id) }}" class="hover:underline">{{ o.tracking_number or '-' }}</a></td>
+            <td>
+              <div class="font-medium text-slate-100">{{ o.customer_full_name or o.full_name }}</div>
+              {% if o.company_name %}<div class="text-xs text-slate-400">{{ o.company_name }}</div>{% endif %}
+              {% if o.customer_id %}<div class="text-xs text-cyan-400/80">Customer #{{ o.customer_id }}</div>{% endif %}
+            </td>
+            <td class="text-sm"><div>{{ o.email }}</div><div class="text-slate-400">{{ o.phone or '-' }}</div></td>
+            <td class="text-sm"><div>{{ o.service_required or '-' }}</div><div class="text-slate-400">{{ o.origin or '-' }} → {{ o.destination or '-' }}</div></td>
+            <td><span class="status-pill status-{{ o.status }}">{{ o.status }}</span></td>
+            <td class="text-sm">{{ o.submission_date|datetimeformat }}</td>
+            <td>
+              <div class="flex flex-wrap gap-2">
+                <a href="{{ url_for('admin_order_details', order_id=o.id) }}" class="btn-outline-cyan px-3 py-1.5 rounded-md text-xs font-semibold">View</a>
+                {% if o.status == 'pending' %}
+                <form method="POST" action="{{ url_for('approve_order', order_id=o.id) }}" onsubmit="return confirm('Approve order #{{ o.id }}?')">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="btn-cyan px-3 py-1.5 rounded-md text-xs font-semibold">Approve</button>
+                </form>
+                <button type="button" class="px-3 py-1.5 rounded-md text-xs font-semibold border border-rose-400/40 text-rose-300 bg-rose-500/10 hover:bg-rose-500/20" onclick="confirmReject({{ o.id }}, '#{{ o.id }}')">Reject</button>
+                <form id="reject-form-{{ o.id }}" method="POST" action="{{ url_for('reject_order', order_id=o.id) }}" class="hidden">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <input type="hidden" name="rejection_reason" id="reject-reason-{{ o.id }}">
+                </form>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <div class="empty-state">No orders found for the selected filters.</div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

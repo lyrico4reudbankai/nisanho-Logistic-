@@ -1,0 +1,73 @@
+﻿{% extends "admin/base.html" %}
+{% block page_title %}Order Details{% endblock %}
+{% block page_subtitle %}Order #{{ order.id }} • {{ order.tracking_number or 'No tracking number' }}{% endblock %}
+{% block content %}
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <a href="{{ url_for('admin_orders') }}" class="btn-outline-cyan px-3 py-2 rounded-lg text-sm"><i class="fa-solid fa-arrow-left mr-2"></i>Back to Orders</a>
+    <span class="status-pill status-{{ order.status }}">{{ order.status }}</span>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+    <div class="xl:col-span-2 space-y-4">
+      <div class="card"><div class="card-header"><div class="section-title"><i class="fa-solid fa-file-lines text-cyan-300"></i>Order Information</div></div>
+        <div class="card-body grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+          <div><div class="label">Order ID</div><div>#{{ order.id }}</div></div>
+          <div><div class="label">Tracking Number</div><div class="tracking-mono text-cyan-300">{{ order.tracking_number or '-' }}</div></div>
+          <div><div class="label">Service Required</div><div>{{ order.service_required or '-' }}</div></div>
+          <div><div class="label">Shipping Method</div><div>{{ order.shipping_method or '-' }}</div></div>
+          <div><div class="label">Origin</div><div>{{ order.origin or '-' }}</div></div>
+          <div><div class="label">Destination</div><div>{{ order.destination or '-' }}</div></div>
+          <div><div class="label">Cargo Type</div><div>{{ order.cargo_type or '-' }}</div></div>
+          <div><div class="label">Weight / Volume</div><div>{{ order.weight or '-' }}</div></div>
+          <div><div class="label">Submitted</div><div>{{ order.submission_date|datetimeformat }}</div></div>
+          <div><div class="label">Updated</div><div>{{ order.updated_at|datetimeformat if order.updated_at else '-' }}</div></div>
+          <div class="sm:col-span-2"><div class="label">Message / Requirements</div><div class="whitespace-pre-wrap text-slate-300">{{ order.message or '-' }}</div></div>
+        </div>
+      </div>
+
+      <div class="card"><div class="card-header"><div class="section-title"><i class="fa-solid fa-user text-cyan-300"></i>Customer Information</div></div>
+        <div class="card-body grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+          <div><div class="label">Full Name</div><div>{{ order.full_name }}</div></div>
+          <div><div class="label">Company</div><div>{{ order.company_name or '-' }}</div></div>
+          <div><div class="label">Email</div><div>{{ order.email }}</div></div>
+          <div><div class="label">Phone</div><div>{{ order.phone or '-' }}</div></div>
+          <div><div class="label">Linked Customer ID</div><div>{% if order.customer_id %}<a class="text-cyan-300 hover:underline" href="{{ url_for('admin_customer_details', customer_id=order.customer_id) }}">#{{ order.customer_id }}</a>{% else %}-{% endif %}</div></div>
+          <div><div class="label">Linked Customer Created</div><div>{{ order.customer_created_at|datetimeformat if order.customer_created_at else '-' }}</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <div class="card"><div class="card-header"><div class="section-title"><i class="fa-solid fa-shield-check text-cyan-300"></i>Review & Actions</div></div>
+        <div class="card-body space-y-3 text-sm">
+          {% if order.status == 'pending' %}
+            <form method="POST" action="{{ url_for('approve_order', order_id=order.id) }}" onsubmit="return confirm('Approve this order and link/create customer record?')">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="w-full btn-cyan px-4 py-3 rounded-lg font-semibold"><i class="fa-solid fa-check mr-2"></i>Approve Order</button>
+            </form>
+            <form method="POST" action="{{ url_for('reject_order', order_id=order.id) }}" class="space-y-2">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <label class="label" for="rejection_reason">Rejection Reason</label>
+              <textarea id="rejection_reason" name="rejection_reason" rows="4" class="input-field" required placeholder="Explain why this order is rejected"></textarea>
+              <button type="submit" class="w-full px-4 py-3 rounded-lg font-semibold border border-rose-400/40 text-rose-200 bg-rose-500/10 hover:bg-rose-500/20"><i class="fa-solid fa-xmark mr-2"></i>Reject Order</button>
+            </form>
+          {% elif order.status == 'approved' %}
+            <div class="p-3 rounded-lg border border-emerald-400/25 bg-emerald-500/10 text-emerald-200">
+              <div class="font-semibold mb-1">Approved</div>
+              <div>By: {{ order.approved_by or '-' }}</div>
+              <div>At: {{ order.approved_at|datetimeformat }}</div>
+            </div>
+          {% elif order.status == 'rejected' %}
+            <div class="p-3 rounded-lg border border-rose-400/25 bg-rose-500/10 text-rose-200">
+              <div class="font-semibold mb-1">Rejected</div>
+              <div>By: {{ order.rejected_by or '-' }}</div>
+              <div>At: {{ order.rejected_at|datetimeformat }}</div>
+              <div class="mt-2"><span class="label">Reason</span><div class="whitespace-pre-wrap">{{ order.rejection_reason or '-' }}</div></div>
+            </div>
+          {% endif %}
+          <p class="text-xs text-slate-400">All approval/rejection actions are saved to SQL Server (orders, customers link, and audit log).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

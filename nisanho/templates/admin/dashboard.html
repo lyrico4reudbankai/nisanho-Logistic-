@@ -1,0 +1,55 @@
+﻿{% extends "admin/base.html" %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Real-time overview of logistics orders and customers{% endblock %}
+{% block content %}
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+    <div class="stat-card glow-cyan"><div class="stat-label">Total Orders</div><div class="stat-value">{{ stats.total }}</div></div>
+    <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-value text-amber-300">{{ stats.pending }}</div></div>
+    <div class="stat-card"><div class="stat-label">Approved</div><div class="stat-value text-emerald-300">{{ stats.approved }}</div></div>
+    <div class="stat-card"><div class="stat-label">Rejected</div><div class="stat-value text-rose-300">{{ stats.rejected }}</div></div>
+    <div class="stat-card"><div class="stat-label">Customers</div><div class="stat-value text-cyan-300">{{ stats.customers }}</div></div>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+    <div class="xl:col-span-2 card">
+      <div class="card-header flex items-center justify-between gap-3">
+        <div class="section-title"><i class="fa-solid fa-clock-rotate-left text-cyan-300"></i> Recent Orders</div>
+        <a href="{{ url_for('admin_orders') }}" class="btn-outline-cyan px-3 py-1.5 rounded-lg text-sm">View all</a>
+      </div>
+      <div class="card-body p-0 overflow-x-auto">
+        {% if recent_orders %}
+        <table class="admin-table">
+          <thead><tr><th>ID</th><th>Tracking</th><th>Customer</th><th>Service</th><th>Status</th><th>Submitted</th></tr></thead>
+          <tbody>
+            {% for o in recent_orders %}
+            <tr>
+              <td>#{{ o.id }}</td>
+              <td class="tracking-mono text-cyan-300"><a href="{{ url_for('admin_order_details', order_id=o.id) }}" class="hover:underline">{{ o.tracking_number or '-' }}</a></td>
+              <td>{{ o.full_name }}</td>
+              <td>{{ o.service_required or '-' }}</td>
+              <td><span class="status-pill status-{{ o.status }}">{{ o.status }}</span></td>
+              <td>{{ o.submission_date|datetimeformat }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+          <div class="empty-state">No orders submitted yet.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="section-title"><i class="fa-solid fa-bolt text-cyan-300"></i> Quick Actions</div></div>
+      <div class="card-body space-y-3">
+        <a href="{{ url_for('admin_orders') }}" class="btn-cyan w-full text-center px-4 py-3 rounded-lg font-semibold block"><i class="fa-solid fa-list-check mr-2"></i>Manage Orders</a>
+        <a href="{{ url_for('admin_customers') }}" class="btn-outline-cyan w-full text-center px-4 py-3 rounded-lg font-semibold block"><i class="fa-solid fa-users mr-2"></i>Manage Customers</a>
+        <div class="pt-3 border-t border-slate-700/50 text-sm text-slate-400">
+          <div class="text-xs uppercase tracking-wider text-slate-500 mb-1">Admin Session</div>
+          <div class="text-cyan-100 break-all">{{ admin_email }}</div>
+          <p class="mt-2 text-xs">Approve/reject actions and customer linking are saved in SQL Server.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
